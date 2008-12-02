@@ -1,0 +1,79 @@
+<?php 
+ob_start("ob_gzhandler");
+require_once(dirname(__FILE__)."/libs/iniparser.php" );
+$MDB = new iniParser(dirname(__FILE__)."/datos/cuentas.db");
+
+function resta_fechas($fecha1,$fecha2) {
+       if (preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/([0-9][0-9]){1,2}/",$fecha1))           
+              list($dia1,$mes1,$anio1)=split("/",$fecha1);
+        if (preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/([0-9][0-9]){1,2}/",$fecha2))  
+              list($dia2,$mes2,$anio2)=split("/",$fecha2);     
+      return((mktime(0,0,0,$mes1,$dia1,$anio1) - mktime(0,0,0,$mes2,$dia2,$anio2))/(24*60*60));
+}
+
+$f1="24/10/2008";
+//Digicel
+$c_Digicel_OK = $MDB->get("Companias", "Digicel-OK");
+$c_Digicel_NO = $MDB->get("Companias", "Digicel-ERR");
+//Telecom
+$c_Telecom_OK = $MDB->get("Companias", "Telecom-OK");
+$c_Telecom_NO = $MDB->get("Companias", "Telecom-ERR");
+//Telefonica
+$c_Telefonica_OK = $MDB->get("Companias", "Telefonica-OK");
+$c_Telefonica_NO = $MDB->get("Companias", "Telefonica-ERR");
+//Tigo
+$c_Tigo_OK = $MDB->get("Companias", "Tigo-OK");
+$c_Tigo_NO = $MDB->get("Companias", "Tigo-ERR");
+
+
+$Exitosos = $c_Digicel_OK+$c_Telecom_OK+$c_Telefonica_OK+$c_Tigo_OK;
+$Fallidos = $c_Digicel_NO+$c_Telecom_NO+$c_Telefonica_NO+$c_Tigo_NO;
+
+$Totales = $Exitosos + $Fallidos;
+echo "<b>Este es el centro de estadisticas (1.0) para " . $_SERVER['SERVER_NAME'] . "</b><br><br>";
+echo "<b>~Conteo de mensajes~</b><br><br>";
+echo "<b>* Totales *</b><br>";
+echo "Se ha enviado un total de <b>$Totales</b> mensajes. <br /> De los cuales el <b>".round(($Exitosos/$Totales)*100,2)."%</b> ( <b>$Exitosos</b> mensajes) ha sido exitoso y el <b>".round(($Fallidos/$Totales)*100,2)."%</b> ( <b>$Fallidos</b> mensajes ) ha fallado.<br>";
+echo "Eficiencia de envio actual: <b>".round(($Exitosos/$Totales)*100,2).'%</b> ( Aprox. '.ceil(($Exitosos/$Totales)*100)." de cada 100 mensajes se envian bien ).<br>";
+echo "<br><br><b>* Totales por dia *</b><br>";
+$numdias=resta_fechas(date("d/m/Y"),$f1) + 1;
+if ($numdias == 0){
+echo "Aun no se han recolectado estadisticas";
+}else{
+//
+echo "<br><br><b>~Estadisticas de tiempo~</b>";
+echo "<br>Ultimo reinicio de estadisticas: <b>$f1</b>";
+echo "<br>Han transcurrido ".($numdias - 1)." dias desde el ultimo reinicio de estadisticas";
+echo "<br><br><b>~Estadisticas de mensaje y tiempo~</b>";
+echo "<br>Mensajes por dia: <b>".ceil($Totales/$numdias)."</b>";
+echo "<br>Mensajes por hora: <b>".ceil($Totales/($numdias * 24))."</b>";
+echo "<br>Mensajes por minuto: <b>".ceil($Totales/($numdias * 24 * 60))."</b>";
+echo "<br> Mensajes exitosos por dia: <b>".ceil($Exitosos/$numdias)."</b>";
+echo "<br>Mensajes fallidos por dia: <b>".ceil($Fallidos/$numdias)."</b>";
+//
+}
+echo "<br><br><b>* Totales por compañia *</b><br>";
+echo "<br><b>Digicel:</b>";
+echo "<br>Exitosos: ".$c_Digicel_OK." (".round(($buenos/($c_Digicel_OK+$c_Digicel_NO))*100,2)."%)";
+echo "<br>Erroneos: ".$c_Digicel_NO." (".round(($malos/($c_Digicel_OK+$c_Digicel_NO))*100,2)."%)";
+echo "<br>Total: ".($c_Digicel_OK + $c_Digicel_NO)." (".round((($c_Digicel_OK + $c_Digicel_NO)/$Totales)*100,2) ."% de todos lo mensajes)";
+//
+echo "<br><b>Telefonica/Movistar:</b>";
+echo "<br>Exitosos: ".$c_Telefonica_OK." (".round(($c_Telefonica_OK/($c_Telefonica_OK+$c_Telefonica_NO))*100,2)."%)";
+echo "<br>Erroneos: ".$c_Telefonica_NO." (".round(($c_Telefonica_NO/($c_Telefonica_OK+$c_Telefonica_NO))*100,2)."%)";
+echo "<br>Total: ".($c_Telefonica_OK + $malos)." (".round((($c_Telefonica_OK + $c_Telefonica_NO)/$Totales)*100,2) ."% de todos lo mensajes)";
+//
+echo "<br><b>Telecom/Claro:</b>";
+echo "<br>Exitosos: ".$c_Telecom_OK." (".round(($c_Telecom_OK/($c_Telecom_OK+$c_Telecom_NO))*100,2)."%)";
+echo "<br>Erroneos: ".$c_Telecom_NO." (".round(($c_Telecom_NO/($c_Telecom_OK+$c_Telecom_NO))*100,2)."%)";
+echo "<br>Total: ".($c_Telecom_OK + $malos)." (".round((($c_Telecom_OK + $c_Telecom_NO)/$Totales)*100,2) ."% de todos lo mensajes)";
+//
+echo "<br><b>Telemovil/Tigo:</b>";
+echo "<br>Exitosos: ".$c_Tigo_OK." (".round(($c_Tigo_OK/($c_Tigo_OK+$c_Tigo_NO))*100,2)."%)";
+echo "<br>Erroneos: ".$c_Tigo_NO." (".round(($c_Tigo_NO/($c_Tigo_OK+$c_Tigo_NO))*100,2)."%)";
+echo "<br>Total: ".($c_Tigo_OK + $c_Tigo_NO)." (".round((($c_Tigo_OK + $c_Tigo_NO)/$Totales)*100,2) ."% de todos lo mensajes) ";
+echo "<br><br><b>~Estadisticas de visitas~</b><br />";
+echo "Visitas normales (HTML): ". $MDB->get("Hits", "text/html"). "<br />";
+echo "Visitas mobiles (WAP/WML): " . $MDB->get("Hits", "text/vnd.wap.wml"). "<br />";
+echo "<br><br><b>~Copyright~</b><br>Mensajitos.php es un proyecto creado por <b>mxgxw</b> -> www.nohayrazon.com<br>Este es Mensajitos.php TSV, una version modificada por <b>Vlad</b> del software Mensajitos.php<br>";
+?> 

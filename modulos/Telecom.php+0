@@ -1,0 +1,73 @@
+<?php
+function Telecom_Nombre() {
+  return "Telecom:Claro/Personal";
+}
+
+function Telecom_Enviar($telefono,$mensaje,$firma) {
+//echo "-Funcionando en modo de pruebas-<BR>";
+  $snoopy = new Snoopy;
+  // Opciones de Snoopy (Mensajitos se muestra como IExplore 6.0)
+  // Esto es por las paginas que bloquean a navegadores que no
+  // sean Internet Explorer
+  $snoopy->agent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)";
+  //Configuramos el Proxy.
+  //**************************************************
+  $Datos_Proxy = explode(":",cProxy());
+  //echo "0:".$Datos_Proxy[0]."<br>";
+  //echo "1:".$Datos_Proxy[1]."<br>";
+  $snoopy->proxy_host = $Datos_Proxy[0];
+  $snoopy->proxy_port = $Datos_Proxy[1];
+  //echo "Servidor usado: $Datos_Proxy[0]:$Datos_Proxy[1]<br>";
+  //**************************************************
+  $submit_url = "http://sms.telecom.com.sv/pages/claro.aspx";
+  $snoopy->referer = "http://www.claro.com.sv/";
+  $snoopy->set_submit_normal;
+  $snoopy->fetch($submit_url);
+
+//echo "<xmp>".$snoopy->results."</xmp>";
+  //1era proteccion: Cookie -> ASP.NET SessionID
+  //Si no concuerda entonces el mensaje es invalido
+  //Obtenemos las cookies
+  foreach($snoopy->headers as $i=>$val) {
+      if(strstr($val,"Set-Cookie")) {
+        preg_match("/Set\-Cookie: (.*)=(.*);/",$val,$matches);
+        $snoopy->cookies[$matches[1]] = $matches[2];
+        //echo $matches[1]."=".$matches[2]."<br>";
+      }
+  }
+
+  // Valores del formulario
+//ViewState
+$iPos = strpos($snoopy->results,"__VIEWSTATE") + 20 ;
+$fPos = strpos($snoopy->results, "\" />", $iPos);
+$ViewState = substr($snoopy->results, $iPos, $fPos - $iPos);
+//echo "VS:".$ViewState."<br>";
+//echo "#VSf:".$fPos."<br>";
+//echo "#VSi:".$iPos."<br>";
+
+//Codigo
+$iPos = strpos($snoopy->results,'FILTER:Wave(Freq=2, Phase=100, Strength=1); HEIGHT:12px">') + 57 ;
+$Codigo = substr($snoopy->results, $iPos, 5);
+//echo "VC:".$Codigo."<br>";
+//echo "#VCi:".$iPos."<br>";
+
+
+  $submit_vars["__VIEWSTATE"] = $ViewState;
+  $submit_vars['Enviosms2:txtTel'] = $telefono;
+  $submit_vars['Enviosms2:txtmsg'] = $mensaje." F. ".$firma;
+  $submit_vars['Enviosms2:txtCG'] = $Codigo;
+  $submit_vars['Enviosms2:btnenviar'] = "Enviar";
+
+$snoopy->submit($submit_url,$submit_vars);
+//echo "----------------------------------------------------------";
+//echo "<xmp>".$snoopy->results."</xmp>";
+//echo "----------------------------------------------------------";
+
+//Evaluar la salida
+if(strstr($snoopy->results,'exito')===FALSE){
+return false;
+}else{
+return true;
+}
+}
+?>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml"><wml> <card id="no1" title="SMS">  <p>
+  {estado}<br />
+  Telefono:<input type="text" size="8" maxlength="8" name="telefono" value="{uNumero}" emptyok="false" /><br/>  Mensaje:<input type="text" size="125" maxlength="110" name="mensaje" value="{uMensaje}"  emptyok="false" /><br/>  Firma:<input type="text" size="10" maxlength="10" name="firma" value="{uFirma}" emptyok="false" /><br/>  <do type="accept" name="enviar" label="enviar">   <go method="post" href="{script}">    <postfield name="telefono" value="$telefono" />    <postfield name="mensaje" value="$mensaje" />    <postfield name="firma" value="$firma" />   </go>
+  </do>
+  </p> </card></wml>

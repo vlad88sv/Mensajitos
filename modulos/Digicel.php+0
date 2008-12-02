@@ -1,0 +1,20 @@
+<?php
+//DIGICEL, S.A. de C.V.
+
+function Digicel_Nombre() {
+  return "Digicel:Live";
+}
+
+function Digicel_Enviar($telefono,$mensaje,$firma) {
+return false;
+ $snoopy = new Snoopy;
+$comando="http://aurox.sytes.net/Cod.D.php?fir=".rawurlencode($firma)."&tel=".$telefono."&men=".rawurlencode($mensaje);
+$snoopy->fetch($comando);
+//Evaluar la salida
+if(strstr($snoopy->results,'0')===FALSE){
+return false;
+}else{
+return true;
+}
+}
+?>

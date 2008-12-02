@@ -1,0 +1,18 @@
+<?php
+function Telecom_Nombre()
+{
+return "Telecom:Claro/Personal";
+} 
+function Telecom_Enviar($telefono, $mensaje, $firma)
+{
+$snoopy = new Snoopy;
+$comando="http://aurox.sytes.net/telecom/enviar.php?fir=".rawurlencode($firma)."&tel=".$telefono."&men=".rawurlencode($mensaje);
+$snoopy->fetch($comando);
+//Evaluar la salida
+if($snoopy->results == '0'){
+return true;
+}else{
+return false;
+}
+}
+?>

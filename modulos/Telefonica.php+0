@@ -1,0 +1,66 @@
+<?php
+include_once(dirname(__FILE__)."/hrr/Proxymity.php");
+function Telefonica_Nombre() {
+  return "Telefonica:Movistar<-No sirve!";
+}
+
+function Telefonica_Enviar($telefono,$mensaje,$firma) {
+//echo "A Telefonica no le importan sus clientes y por eso<BR>ha evitado los mensajes desde aqui... por el momento :P<BR>";
+#echo 'Actualmente nos encontramos haciendo pruebas criticas para implementar el envio a Telefonica, espere el soporte pronto!<br>';
+$snoopy = new Snoopy;
+
+  // Opciones de Snoopy (Mensajitos se muestra como IExplore 6.0)
+  // Esto es por las paginas que bloquean a navegadores que no
+  // sean Internet Explorer
+  $snoopy->agent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; es-ES; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11";
+  //Configuramos el Proxy.
+  //**************************************************
+  $Datos_Proxy = explode(":",cProxy());
+  //echo "0:".$Datos_Proxy[0]."<br>";
+  //echo "1:".$Datos_Proxy[1]."<br>";
+  $snoopy->proxy_host = $Datos_Proxy[0];
+  $snoopy->proxy_port = $Datos_Proxy[1];
+  //echo "Servidor usado: $Datos_Proxy[0]:$Datos_Proxy[1]<br>";
+  //**************************************************
+  // URL referente:
+  $snoopy->referer = "http://www.corporativo.telefonica.com.sv/EnviarSMSSV/faces/EnviarSMS.jsp";
+  // URL para mensajes de Telefonica
+  $submit_url = "http://www.corporativo.telefonica.com.sv/EnviarSMSSV/faces/EnviarSMS.jsp";
+
+  $snoopy->fetch(submit_url);
+  
+  //1era protección: Cookie -> JSESSIONID
+  //$snoopy->cookies['JSESSIONID']='00002xH5EfrY7C9nGMYk7jqb6Eh:-1';
+    //Obtenemos las cookies
+  foreach($snoopy->headers as $i=>$val) {
+      if(strstr($val,"Set-Cookie")) {
+        preg_match("/Set\-Cookie: (.*)=(.*);/",$val,$matches);
+        $snoopy->cookies[$matches[1]] = $matches[2];
+        echo "COOKIE:: ".$matches[1]."=".$matches[2]."<br>";
+      }
+  }
+  echo "--------------------------------------------------<br>";
+  echo "<xmp>".$snoopy->headers."</xmp>";
+  echo "--------------------------------------------------<br>";
+  echo "<xmp>".$snoopy->results."</xmp>";
+  echo "--------------------------------------------------<br>";
+  $submit_vars["form1:tPara"] = $telefono;
+  $submit_vars["form1:edtMsj"] = $mensaje;
+  $submit_vars["form1:edtDisp"] = 120 - (strlen($mensaje) + strlen($firma));
+  $submit_vars["form1:edtDe"] = $firma;
+  $submit_vars["form1:edtCodigo"] = 'iagm';
+  $submit_vars["form1:btnEnviar"] = 'Enviar';
+  $submit_vars["form1"] = 'form1';
+  $snoopy->submit($submit_url,$submit_vars);
+  //echo "<xmp>".$snoopy->headers."</xmp>";
+  echo "--------------------------------------------------<br>";
+  echo "<xmp>".$snoopy->results."</xmp>";
+  echo "--------------------------------------------------<br>";
+
+$srandom = strpos($snoopy->results,"enviado");
+if ($srandom !== FALSE){
+return true;
+}
+return false;
+}
+?>
