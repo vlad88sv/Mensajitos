@@ -25,6 +25,7 @@ Contacto: vladimiroski@gmail.com
 Más información: http://xmensajitos.todosv.com
 */
 // Definimos las constantes de directorios para poder accesarlas desde todo el codigo
+$MiVersion = ' 2.18.0'
 $home = dirname(__FILE__);
 $plantilla = $home."/plantilla/mensajitos.htm";
 $modulos = array('Digicel','Telecom','Red','Telefonica','Tigo');
@@ -77,6 +78,7 @@ function procesarPlantilla($archivo,$valores) {
     }
     return $buffer;
 }
+
 function DenegarFiltro($mensaje) {
 global $filtro;
 $denegar = false;
@@ -91,8 +93,7 @@ $denegar = false;
     return $denegar;
 }
 
-
-  // Detecta el modulo a utilizar en base al numero de telefono
+// Detecta el modulo a utilizar en base al numero de telefono
 function ModuloOperador($pre) {
 global $modulos;
   if((($pre>=73000000)&&($pre<=73349999))||
@@ -147,7 +148,7 @@ global $modulos;
   return NULL;
 }
 
-//Sera que  quieren hacer un GET?
+//Sera que quieren hacer un GET?
 if(isset($_GET['t'])&&isset($_GET['m'])&&isset($_GET['f'])) {
 	$_POST['telefono'] = $_GET['t'];
 	$_POST['mensaje'] = $_GET['m'];
@@ -265,7 +266,7 @@ $vars["{script}"] = $_SERVER['PHP_SELF'];
 //Accion del POST
 
 //Informacion del formulario
-$vars["{version}"] = '<FONT SIZE=1><A href="http://www.todosv.com">Version 2.18.0</A><BR><A href="estad.php" target="_blank">Estadisticas</A></FONT>';
+$vars["{version}"] = '<FONT SIZE=1><A href="http://www.todosv.com">Version ' . $MiVersion . '</A><BR><A href="estad.php" target="_blank">Estadisticas</A></FONT>';
 $vars["{estado}"] = $estado;
 $vars["{operador}"] = $ret;
 $vars["{uNumero}"] = $telefono;
