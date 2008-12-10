@@ -25,7 +25,7 @@ Contacto: vladimiroski@gmail.com
 Más información: http://xmensajitos.todosv.com
 */
 // Definimos las constantes de directorios para poder accesarlas desde todo el codigo
-$MiVersion = ' 2.18.0'
+$MiVersion = ' 2.18.0';
 $home = dirname(__FILE__);
 $plantilla = $home."/plantilla/mensajitos.htm";
 $modulos = array('Digicel','Telecom','Red','Telefonica','Tigo');
@@ -266,7 +266,7 @@ $vars["{script}"] = $_SERVER['PHP_SELF'];
 //Accion del POST
 
 //Informacion del formulario
-$vars["{version}"] = '<FONT SIZE=1><A href="http://www.todosv.com">Version ' . $MiVersion . '</A><BR><A href="estad.php" target="_blank">Estadisticas</A></FONT>';
+$vars["{version}"] = '<a href="http://www.todosv.com">Version ' . $MiVersion . '</a><br /><a href="estad.php" target="_blank">Estadísticas</a>';
 $vars["{estado}"] = $estado;
 $vars["{operador}"] = $ret;
 $vars["{uNumero}"] = $telefono;
