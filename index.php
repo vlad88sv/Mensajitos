@@ -57,13 +57,13 @@ if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
 	// Es un dispositivo movil, soporta WML
 	$plantilla = $home."/plantilla/mensajitos.wml";
 	$mime = text/vnd.wap.wml;
+	header("Content-type: $mime");
 }
 else{
 	// No soporta wml (o no quiere xD)
 	$plantilla = $home."/plantilla/mensajitos.htm";
 	$mime = "text/html";
 }
-	header("Content-type: $mime");
 
 function agregarNumFueraDeRango($Numero){
 	$I_FR_MDB = new iniParser($r_fuera_de_rango);
@@ -168,9 +168,9 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
 	$mensaje = $_POST['mensaje'];
 	$firma = $_POST['firma'];
 	//************************************************
-	// Revisamos si es un formulario de redireccion
-	$url_ok = $_POST['urlok'];
-	$url_bad = $_POST['urlbad'];
+	// Revisión de respuesta (Si se envío o no)
+	//$url_ok = $_POST['urlok'];
+	//$url_bad = $_POST['urlbad'];
 	//************************************************
 	//Comprobamos que no sea publicidad, cobro, etc.
 	if (DenegarFiltro($mensaje))
