@@ -68,12 +68,12 @@ Si Ud. no configura el acceso a la base de datos, entonces las siguientes caract
          echo '- Base de datos conectada...<br />';
          echo '<h3>+Creando Archivo con datos de conexión...</h3><br />';
          @touch("datos/data.php");
-         @chmod("datos/data.php", 0666);
+         @chmod("datos/data.php", 0777);
          $fh = @fopen("datos/data.php", 'w') or die("No se pudo escribir 'data.php'.<br />");
          if ($fh) {
              $Datos = "<?php\n";
              fwrite($fh, $Datos);
-             $Datos = '$motor = '. $_POST['motor'] .";\n" . '$usuario = '. $_POST['usuario'] .";\n". '$clave = '. $_POST['clave'] .";\n" . '$base = '. $_POST['base'] .";\n";
+             $Datos = '$MiBD_IP = '. $_POST['motor'] .";\n" . '$MiBD_usuario = '. $_POST['usuario'] .";\n". '$MiBD_clave = '. $_POST['clave'] .";\n" . '$MiBD_BD = '. $_POST['base'] .";\n";
              fwrite($fh, $Datos);
              $Datos = "?>\n";
              fwrite($fh, $Datos);
@@ -82,7 +82,7 @@ Si Ud. no configura el acceso a la base de datos, entonces las siguientes caract
          echo '- Creado<br />';
          echo '<h3>+Creando Tablas...</h3><br />';
          //Números fuera de rango.
-         $q="CREATE TABLE xsms_fuera_de_rango ( identificador varchar(10) primary key, fecha_reportado int(11) unsigned, veces_reportado int(5) unsigned;";
+         $q="CREATE TABLE xsms_fuera_de_rango ( numero varchar(10) primary key;";
          CREAR_TBL("xsms_fuera_de_rango", $q);
          //Protección de Flood.
          $q="CREATE TABLE xsms_flood (identificador varchar(30) primary key, fecha_ultimo_acceso int(11) unsigned, numero_accesos int(5) unsigned);";

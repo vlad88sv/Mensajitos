@@ -56,21 +56,31 @@ if ( !$MiBD_link ) {
     $MiBD_OK = @mysql_select_db($MiBD_BD, $MiBD_link);
  }
 
+//Ok, si no tenemos MiBD entonces regresamos al viejo y confiable sistema INI.
+if ( !$MiBD_OK ) {
+    $I_nMDB = new iniParser($nMDB);
+    $I_cMDB = new iniParser($cMDB);
+ }
 
-$I_nMDB = new iniParser($nMDB);
-$I_cMDB = new iniParser($cMDB);
-	
-$mensajeOK = "<b>Mensaje enviado a {uNumero}.<br />"
-    ."De la red de {operador}.</b>";
-$mensajeERROR = "<b>Error al enviar el mensaje.<br />"
-    ."Se uso el operador: {operador}.</b>";
-$mensajeOPEP =  "<b>Error al enviar el mensaje.<br />"
-    ."Revise el numero ({uNumero},{operador}).</b>";
+/*************************************************************************/
+// Mensajes
+/*************************************************************************/
+//Envio exitoso
+$mensajeOK = "<b>Mensaje enviado a {uNumero}.<br />De la red de {operador}.</b>";
+//Envio fallido
+$mensajeERROR = "<b>Error al enviar el mensaje.<br />Se uso el operador: {operador}.</b>";
+//No habia Operador válido
+$mensajeOPEP =  "<b>Error al enviar el mensaje.<br />Revise el numero ({uNumero},{operador}).</b>";
+/*************************************************************************/
 
+/*************************************************************************/
+// Opciones
+/*************************************************************************/
 $limite_flood_num = 50; //Numero maximo de mensajes por $intervalo_flood a un numero.
 $limite_flood_ip = 100; //Numero maximo de mensajes por $intervalo_flood desde 1 ip
 $intervalo_flood = 3600; //Intervalo de flood (en segundos)
 $filtro = array(".*(hsbc).*", ".*(citibank).*", ".*(banco agr?cola).*", ".*(banco cu?catl?n).*", ".*(mora|moroso) .*", ".*(deud.{1,2}) .*");
+/*************************************************************************/
  
 if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
 	// Es un dispositivo movil, soporta WML
@@ -85,9 +95,14 @@ if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
  }
 
 function agregarNumFueraDeRango($Numero){
-	$I_FR_MDB = new iniParser($r_fuera_de_rango);
-	$I_FR_MDB->setValue($Numero, "Hit","SI");
-	$I_FR_MDB->save();
+
+    if ( $MiBD_OK ) {
+        $q = "INSERT IGNORE INTO xsms_fuera_de_rango VALUES ('$Numero');";
+    }else {
+        $I_FR_MDB = new iniParser($r_fuera_de_rango);
+        $I_FR_MDB->setValue($Numero, "Hit","SI");
+        $I_FR_MDB->save();
+    }
 }
 
 function procesarPlantilla($archivo,$valores) {
