@@ -20,7 +20,8 @@ Licencia original:
 *****************************************************************
 *
 *****************************************************************
-Esta es la rama experimental NO oficial: "xMensajitos.php", mantenida por Vlad @ TodoSV.com.
+Esta es la rama experimental NO oficial: "xMensajitos.php".
+Esta rama experimental es  mantenida por Carlos Vladimir Hidalgo Durán.
 Contacto: vladimiroski@gmail.com
 Más información: http://xmensajitos.todosv.com
 */
