@@ -30,6 +30,7 @@ $MiVersion = ' 2.18.0';
 $home = dirname(__FILE__);
 $plantilla = $home."/plantilla/mensajitos.htm";
 $modulos = array('Digicel','Telecom','Red','Telefonica','Tigo');
+require_once($home."/datos/data.php"); //Datos del servidor MySQL
 $nMDB = $home."/datos/numeros.db";
 $cMDB = $home."/datos/cuentas.db";
 $r_fuera_de_rango = $home."/datos/fuera_rango.db";
@@ -38,6 +39,23 @@ require_once($home."/libs/snoopy.php");
 require_once($home."/libs/proxymity.php");
 foreach($modulos as $item => $elemento)
 require_once($home."/modulos/".$elemento.".php");
+/*************************************************************************/
+// Tratamos de conectarnos a la base de datos, si lo conseguimos entonces
+// activamos la variable que indicará que se pueden utilizar las funciones
+// dependientes de MiDB.
+// Este metodo debería de asegurar que no se pierda funcionalidad principal
+// al no tener configurado MiBD.
+/*************************************************************************/
+$MiBD_link = @mysql_connect($MiBD_IP, $MiBD_usuario, $MiBD_clave, false);
+if ( !$MiBD_link ) {
+    //No nos pudimos conectar
+    $MiBD_OK = false;
+ } else {
+    //Si nos pudimos conectar, entonces todo depende que podamos escoger sin problemas
+    //la base de datos.
+    $MiBD_OK = @mysql_select_db($MiBD_BD, $MiBD_link);
+ }
+
 
 $I_nMDB = new iniParser($nMDB);
 $I_cMDB = new iniParser($cMDB);
