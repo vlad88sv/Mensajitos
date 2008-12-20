@@ -26,7 +26,7 @@ ob_start("ob_gzhandler");
  Más información: http://xmensajitos.todosv.com
 */
 // Definimos las constantes de directorios para poder accesarlas desde todo el codigo
-$MiVersion = ' 2.18.0';
+$MiVersion = ' 2.19.0';
 $home = dirname(__FILE__);
 $plantilla = $home."/plantilla/mensajitos.htm";
 $modulos = array('Digicel','Telecom','Red','Telefonica','Tigo');
@@ -95,6 +95,10 @@ if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
      $plantilla = $home."/plantilla/mensajitos.htm";
      $mime = "text/html";
  }
+ 
+if ( $MiBD_OK ) {
+InsertarValorSQL("xsms_estadisticas", "'$mime','1'", "valor=valor+1");
+}
 
 function ObtenerValorSQL($sTabla, $sColumna, $sWhere) {
     global $MiBD_OK, $MiBD_link;
