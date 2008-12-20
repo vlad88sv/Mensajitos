@@ -60,6 +60,8 @@ if ( !$MiBD_link ) {
 if ( !$MiBD_OK ) {
     $I_nMDB = new iniParser($nMDB);
     $I_cMDB = new iniParser($cMDB);
+ } else {
+    //echo 'conectado';
  }
 
 /*************************************************************************/
@@ -95,9 +97,11 @@ if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
  }
 
 function agregarNumFueraDeRango($Numero){
-
+    global $MiBD_OK;
     if ( $MiBD_OK ) {
+        global $MiBD_link;
         $q = "INSERT IGNORE INTO xsms_fuera_de_rango VALUES ('$Numero');";
+        @mysql_query($q, $MiBD_link);
     }else {
         $I_FR_MDB = new iniParser($r_fuera_de_rango);
         $I_FR_MDB->setValue($Numero, "Hit","SI");
@@ -149,12 +153,11 @@ function ModuloOperador($pre) {
        (($pre>=79850000)&&($pre<=79899999))) {
         return $modulos[1]; //Telecom
     }
-
-    if((($pre>=79800000)&&($pre<=79839999))||
-       (($pre>=79830000)&&($pre<=79839999))) {
+    
+    if(($pre>=79800000)&&($pre<=79839999)) {
         return $modulos[2]; //Red
     }
-
+    
     if((($pre>=71000000)&&($pre<=71899999))||
        (($pre>=77000000)&&($pre<=77199999))||
        (($pre>=77800000)&&($pre<=77849999))||
@@ -214,42 +217,58 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
 		$estado = "Escriba el numero correctamente";
 		$ret = "Revise su numero";
 	} else {
-        //Comprobamos que no tenga ban.
-        //Cuenta de mensajes a ese numero
-        $cuentaNum = $I_nMDB->getValue($telefono, "cuenta");
-        //Cuando se envio por ultima vez un mensaje a ese numero
-        $ultimoNum = $I_nMDB->getValue($telefono, "ultimo");
-        //Cuenta de mensajes desde esa IP
-        $cuentaIP = $I_nMDB->getValue($_SERVER['REMOTE_ADDR'], "cuenta");
-        //Cuando esa IP nos envio por ultima vez un mensaje
-        $ultimoIP = $I_nMDB->getValue($_SERVER['REMOTE_ADDR'], "ultimo");
+        if ( $MiBD_OK ) {
+            $q = "";
+        } else {
+            //Comprobamos que no tenga ban.
+            //Cuenta de mensajes a ese numero
+            $cuentaNum = $I_nMDB->getValue($telefono, "cuenta");
+            //Cuando se envio por ultima vez un mensaje a ese numero
+            $ultimoNum = $I_nMDB->getValue($telefono, "ultimo");
+            //Cuenta de mensajes desde esa IP
+            $cuentaIP = $I_nMDB->getValue($_SERVER['REMOTE_ADDR'], "cuenta");
+            //Cuando esa IP nos envio por ultima vez un mensaje
+            $ultimoIP = $I_nMDB->getValue($_SERVER['REMOTE_ADDR'], "ultimo");
+        }
         //-------------------------------------------------
         $flooder = 0;
         if (((time() - $ultimoIP) < $intervalo_flood)&&($cuentaIP>$limite_flood_ip)) {
             //Si no ha pasado una hora desde su ultimo mensaje y ha enviado mas mensajes de la cuenta (IP)
             $estado = "Demasiados mensajes por hora desde tu maquina.";
             $ret = "Por favor espere 1 hora. [FLOOD]";
-            $I_nMDB->setValue( $_SERVER['REMOTE_ADDR'], "ultimo", time());
-            $I_nMDB->setValue( $_SERVER['REMOTE_ADDR'], "flood", 1);
-            $flooder = 1;
+            if ( $MiBD_OK ) {
+            } else {
+                $I_nMDB->setValue( $_SERVER['REMOTE_ADDR'], "ultimo", time());
+                $I_nMDB->setValue( $_SERVER['REMOTE_ADDR'], "flood", 1);
+                $flooder = 1;
+            }
         } else if (((time() - $ultimoNum) < $intervalo_flood)&&($cuentaNum>$limite_flood_num)) {
             //Si no ha pasado una hora desde su ultimo mensaje y ha enviado mas mensajes de la cuenta (Numero)
             $estado = "Demasiados mensajes por hora a este numero.";
             $ret = "Por favor espere 1 hora para enviar a este numero. [FLOOD]";
-            $I_nMDB->setValue( $telefono, "flood", 1);
+                    if ( $MiBD_OK ) {
+                    } else {
+                        $I_nMDB->setValue( $telefono, "flood", 1);
+                    }
             $flooder = 1;
         }
         if ((time() - $ultimoIP) > $intervalo_flood) {
             //Si ha pasado una hora desde su ultimo mensaje (IP) le reseteamos su conteo (IP)
             $cuentaIP = 0;
-            $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "flood", 0);
-            $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "cuenta", 0);
+            if ( $MiBD_OK ) {
+            } else {
+                $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "flood", 0);
+                $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "cuenta", 0);
+            }
         }
         if ((time() - $ultimoNum) > $intervalo_flood) {
             //Si ha pasado una hora desde su ultimo mensaje (Num) le reseteamos su conteo (Num)
             $cuentaNum = 0;
-            $I_nMDB->setValue($telefono, "flood", 0);
-            $I_nMDB->setValue($telefono, "cuenta", 0);
+            if ( $MiBD_OK ) {
+            } else {
+                $I_nMDB->setValue($telefono, "flood", 0);
+                $I_nMDB->setValue($telefono, "cuenta", 0);
+            }
         }
         if ($flooder == 0) {
             //Ok, no tiene banneo por flood.
@@ -264,20 +283,29 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
                     if($FEnvio($telefono,$mensaje,$firma)) {
                         $estado = $mensajeOK;
                         //Control de Flood
-                        $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "cuenta", $cuentaIP += 1);
-                        $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "ultimo", time());
-                        $I_nMDB->setValue($telefono, "cuenta", $cuentaNum += 1) ;
-                        $I_nMDB->setValue($telefono, "ultimo", time());
+                        if ( $MiBD_OK ) {
+                        } else {
+                            $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "cuenta", $cuentaIP += 1);
+                            $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "ultimo", time());
+                            $I_nMDB->setValue($telefono, "cuenta", $cuentaNum += 1) ;
+                            $I_nMDB->setValue($telefono, "ultimo", time());
+                        }
                         //Control de Flood
                         $mensaje = '';
                         //+1 al modulo OK
-                        $cuenta = $I_cMDB->getValue("Companias", $modulo."-OK");
-                        $I_cMDB->setValue( "Companias", $modulo."-OK",$cuenta += 1);
+                        if ( $MiBD_OK ) {
+                        }else {
+                            $cuenta = $I_cMDB->getValue("Companias", $modulo."-OK");
+                            $I_cMDB->setValue( "Companias", $modulo."-OK",$cuenta += 1);
+                        }
                     } else {
                         $estado = $mensajeERROR;
                         //+1 al modulo ERROR
-                        $cuenta = $I_cMDB->getValue("Companias", $modulo."-ERR");
-                        $I_cMDB->setValue( "Companias", $modulo."-ERR",$cuenta += 1);
+                        if ( $MiBD_OK ) {
+                        }else {
+                            $cuenta = $I_cMDB->getValue("Companias", $modulo."-ERR");
+                            $I_cMDB->setValue( "Companias", $modulo."-ERR",$cuenta += 1);
+                        }
                     }			
                 } else {
                     $ret = "Sin Operador";
@@ -288,8 +316,11 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
                 $ret = "Revise su mensaje";
             }
         }
-        $I_cMDB->save();
-        $I_nMDB->save();
+        if ( $MiBD_OK ) {
+        }else {    
+            $I_cMDB->save();
+            $I_nMDB->save();
+        }
     }
  }
 //Accion del POST
