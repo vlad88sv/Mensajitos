@@ -8,7 +8,7 @@
      <link rel="StyleSheet" href="estilo.css" type="text/css" />
      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
      <link rel="start" href="/" />
-     <title>Instalador de Control de Laboratorio</title>
+     <title>Instalador de xMensajitos.php</title>
      </head>
      <body>
      <?php
@@ -85,7 +85,7 @@ Si Ud. no configura el acceso a la base de datos, entonces las siguientes caract
          $q="CREATE TABLE xsms_fuera_de_rango ( telefono varchar(10) primary key);";
          CREAR_TBL("xsms_fuera_de_rango", $q);
          //Protección de Flood.
-         $q="CREATE TABLE xsms_flood ( clave varchar(30) primary key, sub_clave varchar(30), valor varchar(30), fecha_ultimo_acceso int(11) unsigned, numero_accesos int(5) unsigned);";
+         $q="CREATE TABLE xsms_flood ( clave varchar(30) primary key, valor int(11) unsigned);";
          CREAR_TBL("xsms_flood", $q);
          //Estadisticas
          $q="CREATE TABLE xsms_estadisticas (rama varchar(30) primary key, sub_rama varchar(30), valor varchar(30));";

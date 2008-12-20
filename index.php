@@ -110,6 +110,20 @@ function ObtenerValorSQL($sTabla, $sColumna, $sWhere) {
   }
 }
 
+function EstablecerValorSQL($sTabla,  $sValores) {
+  global $MiBD_OK, $MiBD_link;
+  if ( $MiBD_OK ) {
+	  $q = "REPLACE INTO $sTabla VALUES ($sValores);";
+	  echo $q."<br>";
+	  $resultado = @mysql_query($q, $MiBD_link);
+	   if( $resultado ){
+		return true;
+	  } else {
+		return false;
+	  }
+  }
+}
+
 function agregarNumFueraDeRango($Numero){
     global $MiBD_OK;
     if ( $MiBD_OK ) {
@@ -232,10 +246,10 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
 		$ret = "Revise su numero";
 	} else {
         if ( $MiBD_OK ) {
-            $cuentaNum = ObtenerValorSQL("xsms_flood","valor","clave='$telefono' AND sub_clave='cuenta'");
-            $ultimoNum = ObtenerValorSQL("xsms_flood","valor","clave='$telefono' AND sub_clave='ultimo'");
-            $cuentaIP = ObtenerValorSQL("xsms_flood","valor","clave='".$_SERVER['REMOTE_ADDR']."' AND sub_clave='cuenta'");
-            $ultimoIP = ObtenerValorSQL("xsms_flood","valor","clave='".$_SERVER['REMOTE_ADDR']."' AND sub_clave='ultimo'");
+            $cuentaNum = ObtenerValorSQL("xsms_flood","valor","clave='$telefono.cuenta'");
+            $ultimoNum = ObtenerValorSQL("xsms_flood","valor","clave='$telefono.ultimo'");
+            $cuentaIP = ObtenerValorSQL("xsms_flood","valor","clave='".$_SERVER['REMOTE_ADDR'].".cuenta'");
+            $ultimoIP = ObtenerValorSQL("xsms_flood","valor","clave='".$_SERVER['REMOTE_ADDR'].".ultimo'");
         } else {
             //Comprobamos que no tenga ban.
             //Cuenta de mensajes a ese numero
@@ -254,16 +268,19 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
             $estado = "Demasiados mensajes por hora desde tu maquina.";
             $ret = "Por favor espere 1 hora. [FLOOD]";
             if ( $MiBD_OK ) {
+		EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".ultimo', '". time() . "'");
+		EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".flood', '1'");
             } else {
                 $I_nMDB->setValue( $_SERVER['REMOTE_ADDR'], "ultimo", time());
                 $I_nMDB->setValue( $_SERVER['REMOTE_ADDR'], "flood", 1);
-                $flooder = 1;
             }
+		$flooder = 1;
         } else if (((time() - $ultimoNum) < $intervalo_flood)&&($cuentaNum>$limite_flood_num)) {
             //Si no ha pasado una hora desde su ultimo mensaje y ha enviado mas mensajes de la cuenta (Numero)
             $estado = "Demasiados mensajes por hora a este numero.";
             $ret = "Por favor espere 1 hora para enviar a este numero. [FLOOD]";
                     if ( $MiBD_OK ) {
+			EstablecerValorSQL("xsms_flood","'$telefono.flood', '1'");
                     } else {
                         $I_nMDB->setValue( $telefono, "flood", 1);
                     }
@@ -273,6 +290,8 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
             //Si ha pasado una hora desde su ultimo mensaje (IP) le reseteamos su conteo (IP)
             $cuentaIP = 0;
             if ( $MiBD_OK ) {
+		EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".flood', '0'");
+		EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".cuenta, '0'");
             } else {
                 $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "flood", 0);
                 $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "cuenta", 0);
@@ -282,6 +301,8 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
             //Si ha pasado una hora desde su ultimo mensaje (Num) le reseteamos su conteo (Num)
             $cuentaNum = 0;
             if ( $MiBD_OK ) {
+		EstablecerValorSQL("xsms_flood", "'$telefono.flood', '0'");
+		EstablecerValorSQL("xsms_flood","'$telefono.cuenta', '0'");
             } else {
                 $I_nMDB->setValue($telefono, "flood", 0);
                 $I_nMDB->setValue($telefono, "cuenta", 0);
@@ -301,7 +322,11 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
                         $estado = $mensajeOK;
                         //Control de Flood
                         if ( $MiBD_OK ) {
-                        } else {
+				EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".flood', '" . $cuentaIP += 1 ."'");
+				EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".cuenta', '". time() ."'");
+				EstablecerValorSQL("xsms_flood","'$telefono.cuenta', '". $cuentaNum += 1 ."'");
+				EstablecerValorSQL("xsms_flood","'$telefono.ultimo', '". time() ."'");
+			} else {
                             $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "cuenta", $cuentaIP += 1);
                             $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "ultimo", time());
                             $I_nMDB->setValue($telefono, "cuenta", $cuentaNum += 1) ;
