@@ -82,10 +82,10 @@ Si Ud. no configura el acceso a la base de datos, entonces las siguientes caract
          echo '- Creado<br />';
          echo '<h3>+Creando Tablas...</h3><br />';
          //Números fuera de rango.
-         $q="CREATE TABLE xsms_fuera_de_rango ( numero varchar(10) primary key);";
+         $q="CREATE TABLE xsms_fuera_de_rango ( telefono varchar(10) primary key);";
          CREAR_TBL("xsms_fuera_de_rango", $q);
          //Protección de Flood.
-         $q="CREATE TABLE xsms_flood (identificador varchar(30) primary key, fecha_ultimo_acceso int(11) unsigned, numero_accesos int(5) unsigned);";
+         $q="CREATE TABLE xsms_flood ( clave varchar(30) primary key, sub_clave varchar(30), valor varchar(30), fecha_ultimo_acceso int(11) unsigned, numero_accesos int(5) unsigned);";
          CREAR_TBL("xsms_flood", $q);
          //Estadisticas
          $q="CREATE TABLE xsms_estadisticas (rama varchar(30) primary key, sub_rama varchar(30), valor varchar(30));";

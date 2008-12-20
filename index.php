@@ -61,7 +61,7 @@ if ( !$MiBD_OK ) {
     $I_nMDB = new iniParser($nMDB);
     $I_cMDB = new iniParser($cMDB);
  } else {
-    //echo 'conectado';
+    //echo 'conectado<br />';
  }
 
 /*************************************************************************/
@@ -95,6 +95,20 @@ if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
      $plantilla = $home."/plantilla/mensajitos.htm";
      $mime = "text/html";
  }
+
+function ObtenerValorSQL($sTabla, $sColumna, $sWhere) {
+  global $MiBD_OK, $MiBD_link;
+  if ( $MiBD_OK ) {
+	  $q = "SELECT $sColumna FROM $sTabla WHERE $sWhere;";
+	  echo $q."<br>";
+	  $resultado = @mysql_query($q, $MiBD_link);
+	   if(mysql_num_rows($resultado) > 0){
+		return mysql_result($resultado,0,$sColumna);
+	  } else {
+		return false;
+	  }
+  }
+}
 
 function agregarNumFueraDeRango($Numero){
     global $MiBD_OK;
@@ -218,7 +232,10 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
 		$ret = "Revise su numero";
 	} else {
         if ( $MiBD_OK ) {
-            $q = "";
+            $cuentaNum = ObtenerValorSQL("xsms_flood","valor","clave='$telefono' AND sub_clave='cuenta'");
+            $ultimoNum = ObtenerValorSQL("xsms_flood","valor","clave='$telefono' AND sub_clave='ultimo'");
+            $cuentaIP = ObtenerValorSQL("xsms_flood","valor","clave='".$_SERVER['REMOTE_ADDR']."' AND sub_clave='cuenta'");
+            $ultimoIP = ObtenerValorSQL("xsms_flood","valor","clave='".$_SERVER['REMOTE_ADDR']."' AND sub_clave='ultimo'");
         } else {
             //Comprobamos que no tenga ban.
             //Cuenta de mensajes a ese numero
