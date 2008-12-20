@@ -97,45 +97,45 @@ if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
  }
 
 function ObtenerValorSQL($sTabla, $sColumna, $sWhere) {
-  global $MiBD_OK, $MiBD_link;
-  if ( $MiBD_OK ) {
-	  $q = "SELECT $sColumna FROM $sTabla WHERE $sWhere;";
-	  echo $q."<br>";
-	  $resultado = @mysql_query($q, $MiBD_link);
-	   if(mysql_num_rows($resultado) > 0){
-		return mysql_result($resultado,0,$sColumna);
-	  } else {
-		return false;
-	  }
-  }
+    global $MiBD_OK, $MiBD_link;
+    if ( $MiBD_OK ) {
+        $q = "SELECT $sColumna FROM $sTabla WHERE $sWhere;";
+        echo $q."<br>";
+        $resultado = @mysql_query($q, $MiBD_link);
+        if(mysql_num_rows($resultado) > 0){
+            return mysql_result($resultado,0,$sColumna);
+        } else {
+            return false;
+        }
+    }
 }
 
 function EstablecerValorSQL($sTabla,  $sValores) {
-  global $MiBD_OK, $MiBD_link;
-  if ( $MiBD_OK ) {
-	  $q = "REPLACE INTO $sTabla VALUES ($sValores);";
-	  echo $q."<br>";
-	  $resultado = @mysql_query($q, $MiBD_link);
-	   if( $resultado ){
-		return true;
-	  } else {
-		return false;
-	  }
-  }
+    global $MiBD_OK, $MiBD_link;
+    if ( $MiBD_OK ) {
+        $q = "REPLACE INTO $sTabla VALUES ($sValores);";
+        echo $q."<br>";
+        $resultado = @mysql_query($q, $MiBD_link);
+        if( $resultado ){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 function InsertarValorSQL($sTabla,  $sValores, $OnUpdate) {
-  global $MiBD_OK, $MiBD_link;
-  if ( $MiBD_OK ) {
-	  $q = "INSERT INTO $sTabla VALUES ($sValores) ON DUPLICATE KEY UPDATE $OnUpdate;";
-	  echo $q."<br>";
-	  $resultado = @mysql_query($q, $MiBD_link);
-	   if( $resultado ){
-		return true;
-	  } else {
-		return false;
-	  }
-  }
+    global $MiBD_OK, $MiBD_link;
+    if ( $MiBD_OK ) {
+        $q = "INSERT INTO $sTabla VALUES ($sValores) ON DUPLICATE KEY UPDATE $OnUpdate;";
+        echo $q."<br>";
+        $resultado = @mysql_query($q, $MiBD_link);
+        if( $resultado ){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 function agregarNumFueraDeRango($Numero){
