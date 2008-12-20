@@ -1,5 +1,6 @@
 <?php
 ob_start("ob_gzhandler");
+header("Content-Type:text/html; charset=UTF-8");
 /*
  *****************************************************************
  Licencia original:

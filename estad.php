@@ -1,5 +1,6 @@
 <?php 
 ob_start("ob_gzhandler");
+header("Content-Type:text/html; charset=UTF-8");
 require_once(dirname(__FILE__)."/libs/iniparser.php" );
 require_once(dirname(__FILE__)."/datos/data.php"); //Datos del servidor MySQL
 $MDB = new iniParser(dirname(__FILE__)."/datos/cuentas.db");
