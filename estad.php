@@ -25,7 +25,7 @@ if ( !$MiBD_link ) {
     global $MiBD_OK, $MiBD_link;
     if ( $MiBD_OK ) {
         $q = "SELECT $sColumna FROM $sTabla WHERE $sWhere;";
-        echo $q."<br>";
+        //echo $q."<br>";
         $resultado = @mysql_query($q, $MiBD_link);
         if(mysql_num_rows($resultado) > 0){
             return mysql_result($resultado,0,$sColumna);
