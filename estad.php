@@ -121,8 +121,8 @@ echo "<br>Erroneos: ".$c_Tigo_NO." (".round(($c_Tigo_NO/($c_Tigo_OK+$c_Tigo_NO))
 echo "<br>Total: ".($c_Tigo_OK + $c_Tigo_NO)." (".round((($c_Tigo_OK + $c_Tigo_NO)/$Totales)*100,2) ."% de todos lo mensajes) ";
 if ( $MiBD_OK ) {
 echo "<br><br><b>~Estadisticas de visitas~</b><br />";
-echo "Visitas normales (HTML): ". ObtenerValorSQL("xsms_estadisticas","valor","rama=text/html"). "<br />";
-echo "Visitas mobiles (WAP/WML): " . ObtenerValorSQL("xsms_estadisticas","valor","rama=text/vnd.wap.wml") . "<br />";
+echo "Visitas normales (HTML): ". ObtenerValorSQL("xsms_estadisticas","valor","rama='text/html'"). "<br />";
+echo "Visitas mobiles (WAP/WML): " . ObtenerValorSQL("xsms_estadisticas","valor","rama='text/vnd.wap.wml'") . "<br />";
 }
 echo "<br><br><b>~Copyright~</b><br>Mensajitos.php es un proyecto creado por <b>mxgxw</b> -> www.nohayrazon.com<br>Este es Mensajitos.php TSV, una version modificada por <b>Vlad</b> del software Mensajitos.php<br>";
 ?> 
