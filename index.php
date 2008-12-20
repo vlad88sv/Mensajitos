@@ -27,7 +27,7 @@ header("Content-Type:text/html; charset=UTF-8");
  Más información: http://xmensajitos.todosv.com
 */
 // Definimos las constantes de directorios para poder accesarlas desde todo el codigo
-$MiVersion = ' 2.19.0';
+$MiVersion = ' 2.19.0 [PRE]';
 $home = dirname(__FILE__);
 $plantilla = $home."/plantilla/mensajitos.htm";
 $modulos = array('Digicel','Telecom','Red','Telefonica','Tigo');
@@ -98,8 +98,8 @@ if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
  }
  
 if ( $MiBD_OK ) {
-InsertarValorSQL("xsms_estadisticas", "'$mime','1'", "valor=valor+1");
-}
+    InsertarValorSQL("xsms_estadisticas", "'$mime','1'", "valor=valor+1");
+ }
 
 function ObtenerValorSQL($sTabla, $sColumna, $sWhere) {
     global $MiBD_OK, $MiBD_link;
@@ -287,30 +287,30 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
             $estado = "Demasiados mensajes por hora desde tu maquina.";
             $ret = "Por favor espere 1 hora. [FLOOD]";
             if ( $MiBD_OK ) {
-		EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".ultimo', '". time() . "'");
-		EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".flood', '1'");
+                EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".ultimo', '". time() . "'");
+                EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".flood', '1'");
             } else {
                 $I_nMDB->setValue( $_SERVER['REMOTE_ADDR'], "ultimo", time());
                 $I_nMDB->setValue( $_SERVER['REMOTE_ADDR'], "flood", 1);
             }
-		$flooder = 1;
+            $flooder = 1;
         } else if (((time() - $ultimoNum) < $intervalo_flood)&&($cuentaNum>$limite_flood_num)) {
             //Si no ha pasado una hora desde su ultimo mensaje y ha enviado mas mensajes de la cuenta (Numero)
             $estado = "Demasiados mensajes por hora a este numero.";
             $ret = "Por favor espere 1 hora para enviar a este numero. [FLOOD]";
-                    if ( $MiBD_OK ) {
-			EstablecerValorSQL("xsms_flood","'$telefono.flood', '1'");
-                    } else {
-                        $I_nMDB->setValue( $telefono, "flood", 1);
-                    }
+            if ( $MiBD_OK ) {
+                EstablecerValorSQL("xsms_flood","'$telefono.flood', '1'");
+            } else {
+                $I_nMDB->setValue( $telefono, "flood", 1);
+            }
             $flooder = 1;
         }
         if ((time() - $ultimoIP) > $intervalo_flood) {
             //Si ha pasado una hora desde su ultimo mensaje (IP) le reseteamos su conteo (IP)
             $cuentaIP = 0;
             if ( $MiBD_OK ) {
-		EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".flood', '0'");
-		EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".cuenta, '0'");
+                EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".flood', '0'");
+                EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".cuenta, '0'");
             } else {
                 $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "flood", 0);
                 $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "cuenta", 0);
@@ -320,8 +320,8 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
             //Si ha pasado una hora desde su ultimo mensaje (Num) le reseteamos su conteo (Num)
             $cuentaNum = 0;
             if ( $MiBD_OK ) {
-		EstablecerValorSQL("xsms_flood", "'$telefono.flood', '0'");
-		EstablecerValorSQL("xsms_flood","'$telefono.cuenta', '0'");
+                EstablecerValorSQL("xsms_flood", "'$telefono.flood', '0'");
+                EstablecerValorSQL("xsms_flood","'$telefono.cuenta', '0'");
             } else {
                 $I_nMDB->setValue($telefono, "flood", 0);
                 $I_nMDB->setValue($telefono, "cuenta", 0);
@@ -341,11 +341,11 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
                         $estado = $mensajeOK;
                         //Control de Flood
                         if ( $MiBD_OK ) {
-				EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".cuenta', '" . ($cuentaIP+=1) ."'");
-				EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".ultimo', '". time() ."'");
-				EstablecerValorSQL("xsms_flood","'$telefono.cuenta', '". ($cuentaNum+=1) ."'");
-				EstablecerValorSQL("xsms_flood","'$telefono.ultimo', '". time() ."'");
-			} else {
+                            EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".cuenta', '" . ($cuentaIP+=1) ."'");
+                            EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".ultimo', '". time() ."'");
+                            EstablecerValorSQL("xsms_flood","'$telefono.cuenta', '". ($cuentaNum+=1) ."'");
+                            EstablecerValorSQL("xsms_flood","'$telefono.ultimo', '". time() ."'");
+                        } else {
                             $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "cuenta", $cuentaIP += 1);
                             $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "ultimo", time());
                             $I_nMDB->setValue($telefono, "cuenta", $cuentaNum += 1) ;
@@ -355,7 +355,7 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
                         $mensaje = '';
                         //+1 al modulo OK
                         if ( $MiBD_OK ) {
-				InsertarValorSQL("xsms_estadisticas", "'".$modulo."-OK". "','1'", "valor=valor+1");
+                            InsertarValorSQL("xsms_estadisticas", "'".$modulo."-OK". "','1'", "valor=valor+1");
                         }else {
                             $cuenta = $I_cMDB->getValue("Companias", $modulo."-OK");
                             $I_cMDB->setValue( "Companias", $modulo."-OK",$cuenta += 1);
@@ -364,7 +364,7 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
                         $estado = $mensajeERROR;
                         //+1 al modulo ERROR
                         if ( $MiBD_OK ) {
-				InsertarValorSQL("xsms_estadisticas", "'".$modulo."-ERR". "','1'", "valor=valor+1");
+                            InsertarValorSQL("xsms_estadisticas", "'".$modulo."-ERR". "','1'", "valor=valor+1");
                         }else {
                             $cuenta = $I_cMDB->getValue("Companias", $modulo."-ERR");
                             $I_cMDB->setValue( "Companias", $modulo."-ERR",$cuenta += 1);
