@@ -15,9 +15,8 @@ echo
      <body>';
 function CREAR_TBL($TBL,$QUERY) {
     global $link;
-    $x = @mysql_query("DROP TABLE IF EXISTS $TBL;", $link) or die('!->No se pudo eliminar la tabla "'.$TBL.'".<br /><pre>' . mysql_error() . '</pre>');
     $x = @mysql_query($QUERY, $link) or die('!->No se pudo crear la tabla "'. $TBL .'".<br /><pre>' . mysql_error() . '</pre>');
-    if ($x) {echo "- Creada: '$TBL'<br />";}
+    if ($x) {echo "- Creada: '$TBL' [$x]<br />";}
 }
 
 if (!isset($_POST['instalar'])) {
@@ -83,13 +82,13 @@ Si Ud. no configura el acceso a la base de datos, entonces las siguientes caract
     echo '- Creado<br />';
     echo '<h3>+Creando Tablas...</h3><br />';
     //Números fuera de rango.
-    $q="CREATE TABLE xsms_fuera_de_rango ( telefono varchar(10) primary key);";
+    $q="CREATE TABLE IF NOT EXISTS xsms_fuera_de_rango ( telefono varchar(10) primary key );";
     CREAR_TBL("xsms_fuera_de_rango", $q);
     //Protección de Flood.
-    $q="CREATE TABLE xsms_flood ( clave varchar(30) primary key, valor int(11) unsigned);";
+    $q="CREATE TABLE IF NOT EXISTS xsms_flood ( clave varchar(30) primary key, valor int(11) unsigned );";
     CREAR_TBL("xsms_flood", $q);
     //Estadisticas
-    $q="CREATE TABLE xsms_estadisticas (rama varchar(30) primary key, valor int(11) unsigned DEFAULT 0);";
+    $q="CREATE TABLE IF NOT EXISTS xsms_estadisticas ( rama varchar(30) primary key, valor int(11) unsigned DEFAULT 0 );";
     CREAR_TBL("xsms_estadisticas", $q);
     mysql_close($link);
     echo '<br /><b>Instalación completa</b><br />';
