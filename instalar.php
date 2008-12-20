@@ -88,7 +88,7 @@ Si Ud. no configura el acceso a la base de datos, entonces las siguientes caract
          $q="CREATE TABLE xsms_flood ( clave varchar(30) primary key, valor int(11) unsigned);";
          CREAR_TBL("xsms_flood", $q);
          //Estadisticas
-         $q="CREATE TABLE xsms_estadisticas (rama varchar(30) primary key, sub_rama varchar(30), valor varchar(30));";
+         $q="CREATE TABLE xsms_estadisticas (rama varchar(30) primary key, valor int(11) unsigned DEFAULT 0);";
          CREAR_TBL("xsms_estadisticas", $q);
          mysql_close($link);
          echo '<br /><b>Instalación completa</b><br />';

@@ -124,6 +124,20 @@ function EstablecerValorSQL($sTabla,  $sValores) {
   }
 }
 
+function InsertarValorSQL($sTabla,  $sValores, $OnUpdate) {
+  global $MiBD_OK, $MiBD_link;
+  if ( $MiBD_OK ) {
+	  $q = "INSERT INTO $sTabla VALUES ($sValores) ON DUPLICATE KEY UPDATE $OnUpdate;";
+	  echo $q."<br>";
+	  $resultado = @mysql_query($q, $MiBD_link);
+	   if( $resultado ){
+		return true;
+	  } else {
+		return false;
+	  }
+  }
+}
+
 function agregarNumFueraDeRango($Numero){
     global $MiBD_OK;
     if ( $MiBD_OK ) {
@@ -322,9 +336,9 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
                         $estado = $mensajeOK;
                         //Control de Flood
                         if ( $MiBD_OK ) {
-				EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".flood', '" . $cuentaIP += 1 ."'");
-				EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".cuenta', '". time() ."'");
-				EstablecerValorSQL("xsms_flood","'$telefono.cuenta', '". $cuentaNum += 1 ."'");
+				EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".cuenta', '" . ($cuentaIP+=1) ."'");
+				EstablecerValorSQL("xsms_flood","'".$_SERVER['REMOTE_ADDR'].".ultimo', '". time() ."'");
+				EstablecerValorSQL("xsms_flood","'$telefono.cuenta', '". ($cuentaNum+=1) ."'");
 				EstablecerValorSQL("xsms_flood","'$telefono.ultimo', '". time() ."'");
 			} else {
                             $I_nMDB->setValue($_SERVER['REMOTE_ADDR'], "cuenta", $cuentaIP += 1);
@@ -336,6 +350,7 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
                         $mensaje = '';
                         //+1 al modulo OK
                         if ( $MiBD_OK ) {
+				InsertarValorSQL("xsms_estadisticas", "'".$modulo."-OK". "','1'", "valor=valor+1");
                         }else {
                             $cuenta = $I_cMDB->getValue("Companias", $modulo."-OK");
                             $I_cMDB->setValue( "Companias", $modulo."-OK",$cuenta += 1);
@@ -344,6 +359,7 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
                         $estado = $mensajeERROR;
                         //+1 al modulo ERROR
                         if ( $MiBD_OK ) {
+				InsertarValorSQL("xsms_estadisticas", "'".$modulo."-ERR". "','1'", "valor=valor+1");
                         }else {
                             $cuenta = $I_cMDB->getValue("Companias", $modulo."-ERR");
                             $I_cMDB->setValue( "Companias", $modulo."-ERR",$cuenta += 1);
