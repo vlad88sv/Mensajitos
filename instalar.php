@@ -1,4 +1,5 @@
 <?php
+include_once("datos/data.php");
 echo
 '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
@@ -67,13 +68,19 @@ Si Ud. no configura el acceso a la base de datos, entonces las siguientes caract
     mysql_select_db($_POST['base'], $link) or die('!->La base de datos seleccionada "'.$_POST['base'].'" no existe');
     echo '- Base de datos conectada...<br />';
     echo '<h3>+Creando Archivo con datos de conexión...</h3><br />';
-    @touch("datos/data.php");
-    @chmod("datos/data.php", 0777);
+   @chmod("datos/data.php", 0777);
+    // Conservemos la fecha de instalación si existe, si no creemosla con la fecha de hoy.
+    if ( isset($f1) ) {
+    $fecha_instalacion = $f1;
+    } else {
+    $fecha_instalacion = time();
+    }
+    
     $fh = @fopen("datos/data.php", 'w') or die("No se pudo escribir 'data.php'.<br />");
     if ($fh) {
         $Datos = "<?php\n";
         fwrite($fh, $Datos);
-        $Datos = '$MiBD_IP = "'. $_POST['motor'] .'"'.";\n" . '$MiBD_usuario = "'. $_POST['usuario'] .'"' .";\n". '$MiBD_clave = "'. $_POST['clave'] .'"' .";\n" . '$MiBD_BD = "'. $_POST['base'] . '"' .";\n";
+        $Datos = '$fecha_instalacion = "'. $fecha_instalacion .'"'.";\n" . '$MiBD_IP = "'. $_POST['motor'] .'"'.";\n" . '$MiBD_usuario = "'. $_POST['usuario'] .'"' .";\n". '$MiBD_clave = "'. $_POST['clave'] .'"' .";\n" . '$MiBD_BD = "'. $_POST['base'] . '"' .";\n";
         fwrite($fh, $Datos);
         $Datos = "?>\n";
         fwrite($fh, $Datos);

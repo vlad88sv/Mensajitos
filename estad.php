@@ -43,7 +43,11 @@ function resta_fechas($fecha1,$fecha2) {
       return((mktime(0,0,0,$mes1,$dia1,$anio1) - mktime(0,0,0,$mes2,$dia2,$anio2))/(24*60*60));
 }
 
-$f1="24/10/2008";
+if ( !isset( $fecha_instalacion ) ){
+$f1 = time();
+} else {
+$f1 = $fecha_instalacion;
+}
 if ( $MiBD_OK ) {
 //Digicel
 $c_Digicel_OK = ObtenerValorSQL("xsms_estadisticas","valor","rama='Digicel-OK'");
@@ -80,15 +84,15 @@ echo "<b>Este es el centro de estadisticas (1.2 PRE) para " . $_SERVER['SERVER_N
 echo "<b>~Conteo de mensajes~</b><br />";
 echo "<b>* Totales *</b><br />";
 echo "Se ha enviado un total de <b>$Totales</b> mensajes.<br />De los cuales el <b>".@round(($Exitosos/$Totales)*100,2)."%</b> ( <b>$Exitosos</b> mensajes) ha sido exitoso y el <b>".@round(($Fallidos/$Totales)*100,2)."%</b> ( <b>$Fallidos</b> mensajes ) ha fallado.<br />";
-echo "Eficiencia de envio actual: <b>".@round(($Exitosos/$Totales)*100,2).'%</b> ( Aprox. '.ceil(($Exitosos/$Totales)*100)." de cada 100 mensajes se envian bien ).<br />";
+echo "Eficiencia de envio actual: <b>".@round(($Exitosos/$Totales)*100,2).'%</b> ( Aprox. '.@ceil(($Exitosos/$Totales)*100)." de cada 100 mensajes se envian bien ).<br />";
 echo "<br /><br /><b>* Totales por dia *</b><br />";
-$numdias=resta_fechas(date("d/m/Y"),$f1) + 1;
+$numdias=resta_fechas(date("d/m/Y"),date("d/m/Y",$f1)) + 1;
 if ($numdias == 0){
 echo "Aun no se han recolectado estadisticas";
 }else{
 //
 echo "<b>~Estadisticas de tiempo~</b><br />";
-echo "Ultimo reinicio de estadisticas: <b>$f1</b><br />";
+echo "Último reinicio de estadisticas: <b>".date("d/m/y ~ h:ia",$f1)."</b><br />";
 echo "Han transcurrido ".($numdias - 1)." dias desde el ultimo reinicio de estadisticas<br />";
 echo "<br /><b>~Estadisticas de mensaje y tiempo~</b><br />";
 echo "Mensajes por dia: <b>".ceil($Totales/$numdias)."</b><br />";
