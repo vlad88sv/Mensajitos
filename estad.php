@@ -25,7 +25,7 @@ if ( !$MiBD_link ) {
     global $MiBD_OK, $MiBD_link;
     if ( $MiBD_OK ) {
         $q = "SELECT $sColumna FROM $sTabla WHERE $sWhere;";
-        //echo $q."<br>";
+        //echo $q."<br />";
         $resultado = @mysql_query($q, $MiBD_link);
         if(mysql_num_rows($resultado) > 0){
             return mysql_result($resultado,0,$sColumna);
@@ -72,57 +72,56 @@ $c_Tigo_OK = $MDB->get("Companias", "Tigo-OK");
 $c_Tigo_NO = $MDB->get("Companias", "Tigo-ERR");
 }
 
-
 $Exitosos = $c_Digicel_OK+$c_Telecom_OK+$c_Telefonica_OK+$c_Tigo_OK;
 $Fallidos = $c_Digicel_NO+$c_Telecom_NO+$c_Telefonica_NO+$c_Tigo_NO;
-
 $Totales = $Exitosos + $Fallidos;
-echo "<b>Este es el centro de estadisticas (1.1) para " . $_SERVER['SERVER_NAME'] . "</b><br><br>";
-echo "<b>~Conteo de mensajes~</b><br><br>";
-echo "<b>* Totales *</b><br>";
-echo "Se ha enviado un total de <b>$Totales</b> mensajes. <br /> De los cuales el <b>".round(($Exitosos/$Totales)*100,2)."%</b> ( <b>$Exitosos</b> mensajes) ha sido exitoso y el <b>".round(($Fallidos/$Totales)*100,2)."%</b> ( <b>$Fallidos</b> mensajes ) ha fallado.<br>";
-echo "Eficiencia de envio actual: <b>".round(($Exitosos/$Totales)*100,2).'%</b> ( Aprox. '.ceil(($Exitosos/$Totales)*100)." de cada 100 mensajes se envian bien ).<br>";
-echo "<br><br><b>* Totales por dia *</b><br>";
+
+echo "<b>Este es el centro de estadisticas (1.2 PRE) para " . $_SERVER['SERVER_NAME'] . "</b><br /><br />";
+echo "<b>~Conteo de mensajes~</b><br />";
+echo "<b>* Totales *</b><br />";
+echo "Se ha enviado un total de <b>$Totales</b> mensajes.<br />De los cuales el <b>".round(($Exitosos/$Totales)*100,2)."%</b> ( <b>$Exitosos</b> mensajes) ha sido exitoso y el <b>".round(($Fallidos/$Totales)*100,2)."%</b> ( <b>$Fallidos</b> mensajes ) ha fallado.<br />";
+echo "Eficiencia de envio actual: <b>".round(($Exitosos/$Totales)*100,2).'%</b> ( Aprox. '.ceil(($Exitosos/$Totales)*100)." de cada 100 mensajes se envian bien ).<br />";
+echo "<br /><br /><b>* Totales por dia *</b><br />";
 $numdias=resta_fechas(date("d/m/Y"),$f1) + 1;
 if ($numdias == 0){
 echo "Aun no se han recolectado estadisticas";
 }else{
 //
-echo "<br><br><b>~Estadisticas de tiempo~</b>";
-echo "<br>Ultimo reinicio de estadisticas: <b>$f1</b>";
-echo "<br>Han transcurrido ".($numdias - 1)." dias desde el ultimo reinicio de estadisticas";
-echo "<br><br><b>~Estadisticas de mensaje y tiempo~</b>";
-echo "<br>Mensajes por dia: <b>".ceil($Totales/$numdias)."</b>";
-echo "<br>Mensajes por hora: <b>".ceil($Totales/($numdias * 24))."</b>";
-echo "<br>Mensajes por minuto: <b>".ceil($Totales/($numdias * 24 * 60))."</b>";
-echo "<br> Mensajes exitosos por dia: <b>".ceil($Exitosos/$numdias)."</b>";
-echo "<br>Mensajes fallidos por dia: <b>".ceil($Fallidos/$numdias)."</b>";
+echo "<b>~Estadisticas de tiempo~</b><br />";
+echo "Ultimo reinicio de estadisticas: <b>$f1</b><br />";
+echo "Han transcurrido ".($numdias - 1)." dias desde el ultimo reinicio de estadisticas<br />";
+echo "<br /><b>~Estadisticas de mensaje y tiempo~</b><br />";
+echo "Mensajes por dia: <b>".ceil($Totales/$numdias)."</b><br />";
+echo "Mensajes por hora: <b>".ceil($Totales/($numdias * 24))."</b><br />";
+echo "Mensajes por minuto: <b>".ceil($Totales/($numdias * 24 * 60))."</b><br />";
+echo " Mensajes exitosos por dia: <b>".ceil($Exitosos/$numdias)."</b><br />";
+echo "Mensajes fallidos por dia: <b>".ceil($Fallidos/$numdias)."</b><br />";
 //
 }
-echo "<br><br><b>* Totales por compañia *</b><br>";
-echo "<br><b>Digicel:</b>";
-echo "<br>Exitosos: ".$c_Digicel_OK." (".round(($buenos/($c_Digicel_OK+$c_Digicel_NO))*100,2)."%)";
-echo "<br>Erroneos: ".$c_Digicel_NO." (".round(($malos/($c_Digicel_OK+$c_Digicel_NO))*100,2)."%)";
-echo "<br>Total: ".($c_Digicel_OK + $c_Digicel_NO)." (".round((($c_Digicel_OK + $c_Digicel_NO)/$Totales)*100,2) ."% de todos lo mensajes)";
+echo "<br /><b>* Totales por compañia *</b><br />";
+echo "<b>Digicel:</b><br />";
+echo "Exitosos: ".$c_Digicel_OK." (".round(($buenos/($c_Digicel_OK+$c_Digicel_NO))*100,2)."%)<br />";
+echo "Erroneos: ".$c_Digicel_NO." (".round(($malos/($c_Digicel_OK+$c_Digicel_NO))*100,2)."%)<br />";
+echo "Total: ".($c_Digicel_OK + $c_Digicel_NO)." (".round((($c_Digicel_OK + $c_Digicel_NO)/$Totales)*100,2) ."% de todos lo mensajes)<br />";
 //
-echo "<br><b>Telefonica/Movistar:</b>";
-echo "<br>Exitosos: ".$c_Telefonica_OK." (".round(($c_Telefonica_OK/($c_Telefonica_OK+$c_Telefonica_NO))*100,2)."%)";
-echo "<br>Erroneos: ".$c_Telefonica_NO." (".round(($c_Telefonica_NO/($c_Telefonica_OK+$c_Telefonica_NO))*100,2)."%)";
-echo "<br>Total: ".($c_Telefonica_OK + $malos)." (".round((($c_Telefonica_OK + $c_Telefonica_NO)/$Totales)*100,2) ."% de todos lo mensajes)";
+echo "<b>Telefonica/Movistar:</b><br />";
+echo "Exitosos: ".$c_Telefonica_OK." (".round(($c_Telefonica_OK/($c_Telefonica_OK+$c_Telefonica_NO))*100,2)."%)<br />";
+echo "Erroneos: ".$c_Telefonica_NO." (".round(($c_Telefonica_NO/($c_Telefonica_OK+$c_Telefonica_NO))*100,2)."%)<br />";
+echo "Total: ".($c_Telefonica_OK + $malos)." (".round((($c_Telefonica_OK + $c_Telefonica_NO)/$Totales)*100,2) ."% de todos lo mensajes)<br />";
 //
-echo "<br><b>Telecom/Claro:</b>";
-echo "<br>Exitosos: ".$c_Telecom_OK." (".round(($c_Telecom_OK/($c_Telecom_OK+$c_Telecom_NO))*100,2)."%)";
-echo "<br>Erroneos: ".$c_Telecom_NO." (".round(($c_Telecom_NO/($c_Telecom_OK+$c_Telecom_NO))*100,2)."%)";
-echo "<br>Total: ".($c_Telecom_OK + $malos)." (".round((($c_Telecom_OK + $c_Telecom_NO)/$Totales)*100,2) ."% de todos lo mensajes)";
+echo "<b>Telecom/Claro:</b><br />";
+echo "Exitosos: ".$c_Telecom_OK." (".round(($c_Telecom_OK/($c_Telecom_OK+$c_Telecom_NO))*100,2)."%)<br />";
+echo "Erroneos: ".$c_Telecom_NO." (".round(($c_Telecom_NO/($c_Telecom_OK+$c_Telecom_NO))*100,2)."%)<br />";
+echo "Total: ".($c_Telecom_OK + $malos)." (".round((($c_Telecom_OK + $c_Telecom_NO)/$Totales)*100,2) ."% de todos lo mensajes)<br />";
 //
-echo "<br><b>Telemovil/Tigo:</b>";
-echo "<br>Exitosos: ".$c_Tigo_OK." (".round(($c_Tigo_OK/($c_Tigo_OK+$c_Tigo_NO))*100,2)."%)";
-echo "<br>Erroneos: ".$c_Tigo_NO." (".round(($c_Tigo_NO/($c_Tigo_OK+$c_Tigo_NO))*100,2)."%)";
-echo "<br>Total: ".($c_Tigo_OK + $c_Tigo_NO)." (".round((($c_Tigo_OK + $c_Tigo_NO)/$Totales)*100,2) ."% de todos lo mensajes) ";
+echo "<b>Telemovil/Tigo:</b><br />";
+echo "Exitosos: ".$c_Tigo_OK." (".round(($c_Tigo_OK/($c_Tigo_OK+$c_Tigo_NO))*100,2)."%)<br />";
+echo "Erroneos: ".$c_Tigo_NO." (".round(($c_Tigo_NO/($c_Tigo_OK+$c_Tigo_NO))*100,2)."%)<br />";
+echo "Total: ".($c_Tigo_OK + $c_Tigo_NO)." (".round((($c_Tigo_OK + $c_Tigo_NO)/$Totales)*100,2) ."% de todos lo mensajes)<br />";
 if ( $MiBD_OK ) {
-echo "<br><br><b>~Estadisticas de visitas~</b><br />";
+echo "<br /><b>~Estadisticas de visitas~</b><br />";
 echo "Visitas normales (HTML): ". ObtenerValorSQL("xsms_estadisticas","valor","rama='text/html'"). "<br />";
 echo "Visitas mobiles (WAP/WML): " . ObtenerValorSQL("xsms_estadisticas","valor","rama='text/vnd.wap.wml'") . "<br />";
 }
-echo "<br><br><b>~Copyright~</b><br>Mensajitos.php es un proyecto creado por <b>mxgxw</b> -> www.nohayrazon.com<br>Este es Mensajitos.php TSV, una version modificada por <b>Vlad</b> del software Mensajitos.php<br>";
+echo "<br /><b>~Copyright~</b><br />Mensajitos.php es un proyecto creado por <b>mxgxw</b> -> www.nohayrazon.com<br />Este es Mensajitos.php TSV, una version modificada por <b>Vlad</b> del software Mensajitos.php<br />";
 ?> 
