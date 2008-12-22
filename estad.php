@@ -85,7 +85,7 @@ echo "<b>~Conteo de mensajes~</b><br />";
 echo "<b>* Totales *</b><br />";
 echo "Se ha enviado un total de <b>$Totales</b> mensajes.<br />De los cuales el <b>".@round(($Exitosos/$Totales)*100,2)."%</b> ( <b>$Exitosos</b> mensajes) ha sido exitoso y el <b>".@round(($Fallidos/$Totales)*100,2)."%</b> ( <b>$Fallidos</b> mensajes ) ha fallado.<br />";
 echo "Eficiencia de envio actual: <b>".@round(($Exitosos/$Totales)*100,2).'%</b> ( Aprox. '.@ceil(($Exitosos/$Totales)*100)." de cada 100 mensajes se envian bien ).<br />";
-echo "<br /><br /><b>* Totales por dia *</b><br />";
+echo "<br /><b>* Totales por dia *</b><br />";
 $numdias=resta_fechas(date("d/m/Y"),date("d/m/Y",$f1)) + 1;
 if ($numdias == 0){
 echo "Aun no se han recolectado estadisticas";
@@ -98,7 +98,7 @@ echo "<br /><b>~Estadisticas de mensaje y tiempo~</b><br />";
 echo "Mensajes por dia: <b>".ceil($Totales/$numdias)."</b><br />";
 echo "Mensajes por hora: <b>".ceil($Totales/($numdias * 24))."</b><br />";
 echo "Mensajes por minuto: <b>".ceil($Totales/($numdias * 24 * 60))."</b><br />";
-echo " Mensajes exitosos por dia: <b>".ceil($Exitosos/$numdias)."</b><br />";
+echo "Mensajes exitosos por dia: <b>".ceil($Exitosos/$numdias)."</b><br />";
 echo "Mensajes fallidos por dia: <b>".ceil($Fallidos/$numdias)."</b><br />";
 //
 }
