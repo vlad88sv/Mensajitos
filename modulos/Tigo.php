@@ -4,7 +4,11 @@ function Tigo_Nombre() {
 }
 
 function Tigo_Enviar($telefono,$mensaje,$firma) {
+    global $MiBD_OK;
+    if ( !$MiBD_OK ) {
   $MDB = new iniParser(dirname(__FILE__)."/misc/Tigo.datos.db");
+    }
+
   //**************************************************
   // Snoop
   $snoopy = new Snoopy;
@@ -27,12 +31,20 @@ function Tigo_Enviar($telefono,$mensaje,$firma) {
   //**************************************************
   //Verificamos si hay alguna sesión disponible para este número
   $no_hay_sesion_vigente = true;
+  if ( $MiBD_OK ) {
+      $ultimo_uso_de_sesion = ObtenerValorSQL("xsms_modulos_tigo","valor","rama='$telefono.ultimo'");
+  }else{
   $ultimo_uso_de_sesion = $MDB->getValue($telefono,"ultimo");
+  }
   if ($ultimo_uso_de_sesion) {
 	//echo "Time: " . (time() -  $ultimo_uso_de_sesion)."<br />";
 	if ((time() -  $ultimo_uso_de_sesion) < 120) {
 		$no_hay_sesion_vigente = false;
+        if ( $MiBD_OK ) {
+            $ultimo_uso_de_sesion = ObtenerValorSQL("xsms_modulos_tigo","valor","$telefono.sesion");
+        }else{
 		$session = $MDB->getValue($telefono,"sesion");
+        }
 		//echo "Sesion reusada: $session <br />" ;
 	}
   }
@@ -59,9 +71,14 @@ function Tigo_Enviar($telefono,$mensaje,$firma) {
      //echo "ERROR: Tigo | No dio invitacion<br />";
      return false;
   }
+  if ( $MiBD_OK ) {
+      EstablecerValorSQL("xsms_modulos_tigo","$telefono.ultimo='".time()."'");
+      EstablecerValorSQL("xsms_modulos_tigo","$telefono.sesion='". $session."'");
+  }else{
   $MDB->setValue($telefono, "ultimo", time());
   $MDB->setValue($telefono, "sesion", $session);
   $MDB->save();
+  }
   }
 // ---------------------------------------------------------------------------------------
  
