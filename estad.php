@@ -104,8 +104,8 @@ if ($numdias == 0){
  }
 echo "<br /><b>* Totales por compañia *</b><br />";
 echo "<b>Digicel:</b><br />";
-echo "Exitosos: ".$c_Digicel_OK." (".@round(($buenos/($c_Digicel_OK+$c_Digicel_NO))*100,2)."%)<br />";
-echo "Erroneos: ".$c_Digicel_NO." (".@round(($malos/($c_Digicel_OK+$c_Digicel_NO))*100,2)."%)<br />";
+echo "Exitosos: ".$c_Digicel_OK." (".@round(($c_Digicel_OK/($c_Digicel_OK+$c_Digicel_NO))*100,2)."%)<br />";
+echo "Erroneos: ".$c_Digicel_NO." (".@round(($c_Digicel_NO/($c_Digicel_OK+$c_Digicel_NO))*100,2)."%)<br />";
 echo "Total: ".($c_Digicel_OK + $c_Digicel_NO)." (".@round((($c_Digicel_OK + $c_Digicel_NO)/$Totales)*100,2) ."% de todos lo mensajes)<br />";
 //
 echo "<b>Telefonica/Movistar:</b><br />";
