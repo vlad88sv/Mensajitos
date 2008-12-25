@@ -25,22 +25,22 @@ if ( !$MiBD_link ) {
 function ObtenerValorSQL($sTabla, $sColumna, $sWhere) {
     global $MiBD_OK, $MiBD_link;
     if ( $MiBD_OK ) {
-        $q = "SELECT $sColumna FROM $sTabla WHERE $sWhere;";
-        //echo $q."<br />";
-        $resultado = @mysql_query($q, $MiBD_link);
-        if(mysql_num_rows($resultado) > 0){
-            return mysql_result($resultado,0,$sColumna);
-        } else {
-            return false;
-        }
+	$q = "SELECT $sColumna FROM $sTabla WHERE $sWhere;";
+	//echo $q."<br />";
+	$resultado = @mysql_query($q, $MiBD_link);
+	if(mysql_num_rows($resultado) > 0){
+	    return mysql_result($resultado,0,$sColumna);
+	} else {
+	    return false;
+	}
     }
 }
 
 function resta_fechas($fecha1,$fecha2) {
     if (preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/([0-9][0-9]){1,2}/",$fecha1))           
-        list($dia1,$mes1,$anio1)=split("/",$fecha1);
+	list($dia1,$mes1,$anio1)=split("/",$fecha1);
     if (preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/([0-9][0-9]){1,2}/",$fecha2))  
-        list($dia2,$mes2,$anio2)=split("/",$fecha2);     
+	list($dia2,$mes2,$anio2)=split("/",$fecha2);     
     return((mktime(0,0,0,$mes1,$dia1,$anio1) - mktime(0,0,0,$mes2,$dia2,$anio2))/(24*60*60));
 }
 
@@ -49,6 +49,7 @@ if ( !isset( $fecha_instalacion ) ){
  } else {
     $f1 = $fecha_instalacion;
  }
+ $numdias=resta_fechas(date("d/m/Y"),date("d/m/Y",$f1));
 if ( $MiBD_OK ) {
     //Digicel
     $c_Digicel_OK = ObtenerValorSQL("xsms_estadisticas","valor","rama='Digicel-OK'");
@@ -81,29 +82,26 @@ $Exitosos = $c_Digicel_OK+$c_Telecom_OK+$c_Telefonica_OK+$c_Tigo_OK;
 $Fallidos = $c_Digicel_NO+$c_Telecom_NO+$c_Telefonica_NO+$c_Tigo_NO;
 $Totales = $Exitosos + $Fallidos;
 
-echo "<b>Este es el centro de estadisticas (1.2 PRE) para " . $_SERVER['SERVER_NAME'] . "</b><br /><br />";
-echo "<b>~Conteo de mensajes~</b><br />";
-echo "<b>* Totales *</b><br />";
-echo "Se ha enviado un total de <b>$Totales</b> mensajes.<br />De los cuales el <b>".@round(($Exitosos/$Totales)*100,2)."%</b> ( <b>$Exitosos</b> mensajes) ha sido exitoso y el <b>".@round(($Fallidos/$Totales)*100,2)."%</b> ( <b>$Fallidos</b> mensajes ) ha fallado.<br />";
-echo "Eficiencia de envio actual: <b>".@round(($Exitosos/$Totales)*100,2).'%</b> ( Aprox. '.@ceil(($Exitosos/$Totales)*100)." de cada 100 mensajes se envian bien ).<br />";
-echo "<br /><b>* Totales por dia *</b><br />";
-$numdias=resta_fechas(date("d/m/Y"),date("d/m/Y",$f1));
+echo "<h1>Este es el centro de estadisticas (1.2 PRE).<br />@ " . $_SERVER['SERVER_NAME'] . "</h1><hr />";
+echo "<h2>General</h2>";
 if ($numdias == 0){
     echo "Aun no se han recolectado estadisticas";
  }else{
-    //
-    echo "<b>~Estadisticas de tiempo~</b><br />";
-    echo "Último reinicio de estadisticas: <b>".date("d/m/y ~ h:ia",$f1)."</b><br />";
-    echo "Han transcurrido ".( $numdias )." dias desde el ultimo reinicio de estadisticas<br />";
-    echo "<br /><b>~Estadisticas de mensaje y tiempo~</b><br />";
-    echo "Mensajes por dia: <b>".ceil($Totales/$numdias)."</b><br />";
-    echo "Mensajes por hora: <b>".ceil($Totales/($numdias * 24))."</b><br />";
-    echo "Mensajes por minuto: <b>".ceil($Totales/($numdias * 24 * 60))."</b><br />";
-    echo "Mensajes exitosos por dia: <b>".ceil($Exitosos/$numdias)."</b><br />";
-    echo "Mensajes fallidos por dia: <b>".ceil($Fallidos/$numdias)."</b><br />";
-    //
+    echo "Último reinicio de estadisticas: <b>".date("d/m/y \a\ \l\a\s h:ia",$f1)."</b><br />";
+    echo "Han transcurrido <b>".( $numdias )."</b> dias desde el ultimo reinicio de estadisticas<br />";
  }
-
+echo "<hr /><h2>Mensajes</h2>";
+echo "Se ha enviado un total de <b>$Totales</b> mensajes.<br />De los cuales el <b>".@round(($Exitosos/$Totales)*100,2)."%</b> ( <b>$Exitosos</b> mensajes) ha sido exitoso y el <b>".@round(($Fallidos/$Totales)*100,2)."%</b> ( <b>$Fallidos</b> mensajes ) ha fallado.<br />";
+echo "Eficiencia de envio actual: <b>".@round(($Exitosos/$Totales)*100,2).'%</b> ( Aprox. '.@ceil(($Exitosos/$Totales)*100)." de cada 100 mensajes se envian bien ).<br />";
+if ($numdias > 0){
+echo "<h3>Totales</h3>";
+echo "Mensajes por dia: <b>".ceil($Totales/$numdias)."</b><br />";
+echo "Mensajes por hora: <b>".ceil($Totales/($numdias * 24))."</b><br />";
+echo "Mensajes por minuto: <b>".ceil($Totales/($numdias * 24 * 60))."</b><br />";
+echo "Mensajes exitosos por dia: <b>".ceil($Exitosos/$numdias)."</b><br />";
+echo "Mensajes fallidos por dia: <b>".ceil($Fallidos/$numdias)."</b><br />";
+}
+    //
 // Configurador del graficador.
 $graph = new BAR_GRAPH("hBar");
 $graph->showValues = 1;
@@ -125,20 +123,23 @@ $graph->percValuesFont = "Comic Sans MS, Times New Roman";
 $graph->percValuesSize = 16;
 // Fin de configuración del graficador.
 
-echo "<br /><b>* Totales por compañia *</b><br />";
+echo "<h3>Totales por compañia</h3>";
 $graph->labels = "Digicel,Telefonica/Movistar,Telecom/Claro,Telemovil/Tigo";
 $graph->legend = "Exitosos,Erroneos";
 $graph->values = "$c_Digicel_OK;$c_Digicel_NO, $c_Telefonica_OK;$c_Telefonica_NO, $c_Telecom_OK;$c_Telecom_NO, $c_Tigo_OK;$c_Tigo_NO";
 echo $graph->create();
-echo "<br /><b>* Comparativa de compañias *</b><br />";
+echo "<h3>Comparativa de compañias</h3>";
 $graph->legend = "";
 $graph->values = ($c_Digicel_OK + $c_Digicel_NO).", ".($c_Telefonica_OK + $c_Telefonica_NO).", ".($c_Telecom_OK + $c_Telecom_NO).", ".($c_Tigo_OK +$c_Tigo_NO);
 echo $graph->create();
 if ( $MiBD_OK ) {
-    echo "<br /><b>~Estadisticas de visitas~</b><br />";
+    echo "<hr /><h2>Estadisticas de visitas</h2>";
+    $c_Visitas_HTML = ObtenerValorSQL("xsms_estadisticas","valor","rama='text/html'");
+    $c_Visitas_WAP = ObtenerValorSQL("xsms_estadisticas","valor","rama='text/vnd.wap.wml'");
     $graph->labels = "HTML,WAP/WML";
-    $graph->values = ObtenerValorSQL("xsms_estadisticas","valor","rama='text/html'").", ".ObtenerValorSQL("xsms_estadisticas","valor","rama='text/vnd.wap.wml'");
+    $graph->values = $c_Visitas_HTML.", ".$c_Visitas_WAP;
     echo $graph->create();
+    echo "<br />¡<b>".ceil(($c_Visitas_HTML+$c_Visitas_WAP)/$numdias)."</b> visitas por dia!<br />";
  }
-echo "<br /><b>~Copyright~</b><br />Mensajitos.php es un proyecto creado por <b>mxgxw</b> -> www.nohayrazon.com<br />Este es Mensajitos.php TSV, una version modificada por <b>Vlad</b> del software Mensajitos.php<br />";
+echo "<hr /><h2>Copyright</h2>Mensajitos.php es un proyecto creado por <b>mxgxw</b> -> www.nohayrazon.com<br />Este es Mensajitos.php TSV, una version modificada por <b>Vlad</b> del software Mensajitos.php<br />";
 ?> 
