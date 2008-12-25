@@ -20,7 +20,7 @@ function checkMaxLength(evt) {
 	var currentLength = this.value.length;
 	this.relatedElement.firstChild.nodeValue = currentLength;
 	var evt = (evt) ? evt : document.event;
-	var charCode = (typeof evt.which != "undefined") ? evt.which : ((typeof evt.keyCode != "undefined") ? evt.keyCode : 0);
+	var charCode = (typeof(evt.which) != "undefined") ? evt.which : ((typeof evt.keyCode != "undefined") ? evt.keyCode : 0);
 
 	if (!(charCode >= 13 && charCode <= 126)) {
 	return true;

@@ -6,18 +6,18 @@
   <title>Mensajitos.php - Fundación TodoSV</title>
   <meta name="keywords" content="TodoSV, SMS, El Salvador, Mensajitos.php, svcommunity.org, XMR, eXtreme Mensajitos Reloaded, Reseter, ENTEC" />
   <meta name="description" content="Mensajitos.php es un sitio especializado en envío de SMS a El Salvador" />
-  </head>
+</head>
 <script type="text/javascript" src="libs/textarea.max.js"></script>
+<script type="text/javascript" src="libs/tooltip.js"></script>
 <body onload="setMaxLength();">
-
 {estado}
 <form action="{script}" method="post">
 Tel&eacute;fono:
-<br /><input type="text" name="telefono" maxlength="8" size="10" value="{uNumero}" />
+<br /><input type="text" name="telefono" maxlength="8" size="10" value="{uNumero}" onMouseOver="toolTip('Ingrese aquí el número de telefono.')" onMouseOut="toolTip()" />
 <br />Mensaje:
-<br /><textarea name="mensaje" rows="9" cols="12" maxlength="110">{uMensaje}</textarea>
+<br /><textarea name="mensaje" rows="9" cols="12" maxlength="110" onMouseOver="toolTip('Ingrese aquí su mensaje.<BR />Máximo 110 carácteres.')" onMouseOut="toolTip()" >{uMensaje}</textarea>
 <br />Firma:
-<br /><input type="text" name="firma" size="10" value="{uFirma}" maxlength="10" />
+<br /><input type="text" name="firma" size="10" value="{uFirma}" maxlength="10" onMouseOver="toolTip('Ingrese aqui su nombre o firma.')" onMouseOut="toolTip()" />
 <br /><input type="submit" name="enviar" value="enviar" />
 </form>
 <font size="1">{version}</font>
