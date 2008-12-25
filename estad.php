@@ -1,6 +1,7 @@
 <?php 
 ob_start("ob_gzhandler");
 header("Content-Type:text/html; charset=UTF-8");
+require_once(dirname(__FILE__)."/libs/graphs.inc.php" );
 require_once(dirname(__FILE__)."/libs/iniparser.php" );
 require_once(dirname(__FILE__)."/datos/data.php"); //Datos del servidor MySQL
 $MDB = new iniParser(dirname(__FILE__)."/datos/cuentas.db");
@@ -102,30 +103,42 @@ if ($numdias == 0){
     echo "Mensajes fallidos por dia: <b>".ceil($Fallidos/$numdias)."</b><br />";
     //
  }
+
+// Configurador del graficador.
+$graph = new BAR_GRAPH("hBar");
+$graph->showValues = 1;
+$graph->barColors = "#E0E0E0,#0E0E0E";
+$graph->barBGColor = "white";
+$graph->barBorder = "1px solid #808080";
+$graph->labelColor = "#A0A0A0";
+$graph->labelBGColor = "";
+$graph->labelBorder = "1px dashed #A0A0A0";
+$graph->labelFont = "Arial Black, Arial, Helvetica";
+$graph->labelSize = 16;
+$graph->absValuesColor = "silver";
+$graph->absValuesBGColor = "white";
+$graph->absValuesBorder = "1px solid silver";
+$graph->absValuesFont = "Verdana, Arial, Helvetica";
+$graph->absValuesSize = 14;
+$graph->percValuesColor = "#C0C0C0";
+$graph->percValuesFont = "Comic Sans MS, Times New Roman";
+$graph->percValuesSize = 16;
+// Fin de configuración del graficador.
+
 echo "<br /><b>* Totales por compañia *</b><br />";
-echo "<b>Digicel:</b><br />";
-echo "Exitosos: ".$c_Digicel_OK." (".@round(($c_Digicel_OK/($c_Digicel_OK+$c_Digicel_NO))*100,2)."%)<br />";
-echo "Erroneos: ".$c_Digicel_NO." (".@round(($c_Digicel_NO/($c_Digicel_OK+$c_Digicel_NO))*100,2)."%)<br />";
-echo "Total: ".($c_Digicel_OK + $c_Digicel_NO)." (".@round((($c_Digicel_OK + $c_Digicel_NO)/$Totales)*100,2) ."% de todos lo mensajes)<br />";
-//
-echo "<b>Telefonica/Movistar:</b><br />";
-echo "Exitosos: ".$c_Telefonica_OK." (".@round(($c_Telefonica_OK/($c_Telefonica_OK+$c_Telefonica_NO))*100,2)."%)<br />";
-echo "Erroneos: ".$c_Telefonica_NO." (".@round(($c_Telefonica_NO/($c_Telefonica_OK+$c_Telefonica_NO))*100,2)."%)<br />";
-echo "Total: ".($c_Telefonica_OK + $c_Telefonica_NO)." (".@round((($c_Telefonica_OK + $c_Telefonica_NO)/$Totales)*100,2) ."% de todos lo mensajes)<br />";
-//
-echo "<b>Telecom/Claro:</b><br />";
-echo "Exitosos: ".$c_Telecom_OK." (".@round(($c_Telecom_OK/($c_Telecom_OK+$c_Telecom_NO))*100,2)."%)<br />";
-echo "Erroneos: ".$c_Telecom_NO." (".@round(($c_Telecom_NO/($c_Telecom_OK+$c_Telecom_NO))*100,2)."%)<br />";
-echo "Total: ".($c_Telecom_OK + $malos)." (".@round((($c_Telecom_OK + $c_Telecom_NO)/$Totales)*100,2) ."% de todos lo mensajes)<br />";
-//
-echo "<b>Telemovil/Tigo:</b><br />";
-echo "Exitosos: ".$c_Tigo_OK." (".@round(($c_Tigo_OK/($c_Tigo_OK+$c_Tigo_NO))*100,2)."%)<br />";
-echo "Erroneos: ".$c_Tigo_NO." (".@round(($c_Tigo_NO/($c_Tigo_OK+$c_Tigo_NO))*100,2)."%)<br />";
-echo "Total: ".($c_Tigo_OK + $c_Tigo_NO)." (".@round((($c_Tigo_OK + $c_Tigo_NO)/$Totales)*100,2) ."% de todos lo mensajes)<br />";
+$graph->labels = "Digicel,Telefonica/Movistar,Telecom/Claro,Telemovil/Tigo";
+$graph->legend = "Exitosos,Erroneos";
+$graph->values = "$c_Digicel_OK;$c_Digicel_NO, $c_Telefonica_OK;$c_Telefonica_NO, $c_Telecom_OK;$c_Telecom_NO, $c_Tigo_OK;$c_Tigo_NO";
+echo $graph->create();
+echo "<br /><b>* Comparativa de compañias *</b><br />";
+$graph->legend = "";
+$graph->values = ($c_Digicel_OK + $c_Digicel_NO).", ".($c_Telefonica_OK + $c_Telefonica_NO).", ".($c_Telecom_OK + $c_Telecom_NO).", ".($c_Tigo_OK +$c_Tigo_NO);
+echo $graph->create();
 if ( $MiBD_OK ) {
     echo "<br /><b>~Estadisticas de visitas~</b><br />";
-    echo "Visitas normales (HTML): ". ObtenerValorSQL("xsms_estadisticas","valor","rama='text/html'"). "<br />";
-    echo "Visitas mobiles (WAP/WML): " . ObtenerValorSQL("xsms_estadisticas","valor","rama='text/vnd.wap.wml'") . "<br />";
+    $graph->labels = "HTML,WAP/WML";
+    $graph->values = ObtenerValorSQL("xsms_estadisticas","valor","rama='text/html'").", ".ObtenerValorSQL("xsms_estadisticas","valor","rama='text/vnd.wap.wml'");
+    echo $graph->create();
  }
 echo "<br /><b>~Copyright~</b><br />Mensajitos.php es un proyecto creado por <b>mxgxw</b> -> www.nohayrazon.com<br />Este es Mensajitos.php TSV, una version modificada por <b>Vlad</b> del software Mensajitos.php<br />";
 ?> 
