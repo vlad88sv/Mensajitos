@@ -88,7 +88,7 @@ $filtro = array(".*(hsbc).*", ".*(citibank).*", ".*(banco agr?cola).*", ".*(banc
 if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
 	// Es un dispositivo movil, soporta WML
 	$plantilla = $home."/plantilla/mensajitos.wml";
-	$mime = text/vnd.wap.wml;
+	$mime = "text/vnd.wap.wml";
 	header("Content-type: $mime");
  }
  else{
