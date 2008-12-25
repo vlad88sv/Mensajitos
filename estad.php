@@ -123,19 +123,30 @@ $graph->percValuesFont = "Comic Sans MS, Times New Roman";
 $graph->percValuesSize = 16;
 // Fin de configuración del graficador.
 
-echo "<h3>Totales por compañia</h3>";
-$graph->labels = "Digicel,Telefonica/Movistar,Telecom/Claro,Telemovil/Tigo";
+echo "<h3>Comparativa de compañías.</h3>Número de envios exitosos y erroneos respecto a todas las compañías.<br />";
 $graph->legend = "Exitosos,Erroneos";
+$graph->labels = "Digicel,Telefonica/Movistar,Telecom/Claro,Telemovil/Tigo";
 $graph->values = "$c_Digicel_OK;$c_Digicel_NO, $c_Telefonica_OK;$c_Telefonica_NO, $c_Telecom_OK;$c_Telecom_NO, $c_Tigo_OK;$c_Tigo_NO";
 echo $graph->create();
-echo "<h3>Comparativa de compañias</h3>";
+echo "<h3>Comparativa de compañías.</h3>Demanda de envio por compañías.<br />";
+$graph->labels = "Digicel,Telefonica/Movistar,Telecom/Claro,Telemovil/Tigo";
 $graph->legend = "";
 $graph->values = ($c_Digicel_OK + $c_Digicel_NO).", ".($c_Telefonica_OK + $c_Telefonica_NO).", ".($c_Telecom_OK + $c_Telecom_NO).", ".($c_Tigo_OK +$c_Tigo_NO);
 echo $graph->create();
+echo "<h3>Eficiencia de envio por compañías.</h3>Porcentaje de envios exitosos respecto a total de mensajes por compañia.<br />";
+$graph->type = "pBar";
+$graph->legend = "";
+$graph->showValues = 0;
+$graph->barColors = "#E0E0E0,#E0E0E0,#E0E0E0,#E0E0E";
+$graph->labels = "Digicel,Telefonica/Movistar,Telecom/Claro,Telemovil/Tigo";
+$graph->values = $c_Digicel_OK.";".($c_Digicel_OK + $c_Digicel_NO).", ".$c_Telefonica_OK.";".($c_Telefonica_OK + $c_Telefonica_NO).", ".$c_Telecom_OK.";".($c_Telecom_OK + $c_Telecom_NO).", ".$c_Tigo_OK.";".($c_Tigo_OK +$c_Tigo_NO);
+echo $graph->create();
 if ( $MiBD_OK ) {
     echo "<hr /><h2>Estadisticas de visitas</h2>";
-    $c_Visitas_HTML = ObtenerValorSQL("xsms_estadisticas","valor","rama='text/html'");
-    $c_Visitas_WAP = ObtenerValorSQL("xsms_estadisticas","valor","rama='text/vnd.wap.wml'");
+    $graph->showValues = 1;
+    $graph->type = "hBar";
+    $c_Visitas_HTML = floatval(ObtenerValorSQL("xsms_estadisticas","valor","rama='text/html'"));
+    $c_Visitas_WAP = floatval(ObtenerValorSQL("xsms_estadisticas","valor","rama='text/vnd.wap.wml'"));
     $graph->labels = "HTML,WAP/WML";
     $graph->values = $c_Visitas_HTML.", ".$c_Visitas_WAP;
     echo $graph->create();
