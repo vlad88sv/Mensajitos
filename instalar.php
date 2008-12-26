@@ -1,5 +1,5 @@
 <?php
-include_once("datos/data.php");
+require_once("datos/data.php");
 echo
 '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
@@ -58,7 +58,7 @@ Si Ud. no configura el acceso a la base de datos, entonces las siguientes caract
 </form>
 ';
  } else {
-    echo '<b>cLab - Instalador : Instalando</b><br />';
+    echo '<b>xMensajitos.php - Instalador : Instalando</b><br />';
     if ($_POST['admin_clave'] != $_POST['admin_clave2']) {
         echo '<h3>+Las contraseñas no coinciden.</h3><br />
 <a href="javascript:history.back();">Regresar al instalador</a>';
@@ -70,10 +70,8 @@ Si Ud. no configura el acceso a la base de datos, entonces las siguientes caract
     echo '<h3>+Creando Archivo con datos de conexión...</h3><br />';
    @chmod("datos/data.php", 0777);
     // Conservemos la fecha de instalación si existe, si no creemosla con la fecha de hoy.
-    if ( isset($f1) ) {
-    $fecha_instalacion = $f1;
-    } else {
-    $fecha_instalacion = time();
+    if ( !isset($fecha_instalacion) ) {
+	$fecha_instalacion = time();
     }
     
     $fh = @fopen("datos/data.php", 'w') or die("No se pudo escribir 'data.php'.<br />");
