@@ -13,7 +13,9 @@ echo
      <link rel="start" href="/" />
      <title>Instalador de xMensajitos.php</title>
      </head>
-     <body>';
+     <body>
+     <div id="centerwrapper">
+     <div id="content">';
 function CREAR_TBL($TBL,$QUERY) {
     global $link;
     $x = @mysql_query($QUERY, $link) or die('!->No se pudo crear la tabla "'. $TBL .'".<br /><pre>' . mysql_error() . '</pre>');
@@ -98,6 +100,8 @@ Si Ud. no configura el acceso a la base de datos, entonces las siguientes caract
     echo '<br /><b>Instalación completa</b><br />';
  }
 echo
-'</body>
+'</div>
+</div>
+</body>
 </html>';
 ?>

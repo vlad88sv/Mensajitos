@@ -11,7 +11,7 @@ echo
      <link rel="StyleSheet" href="estilo.css" type="text/css" />
      <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
      <link rel="start" href="/" />
-     <title>Instalador de xMensajitos.php</title>
+     <title>Estadísticas de xMensajitos.php</title>
      </head>
      <body>
      <div id="centerwrapper">
@@ -97,7 +97,7 @@ $Exitosos = $c_Digicel_OK+$c_Telecom_OK+$c_Telefonica_OK+$c_Tigo_OK;
 $Fallidos = $c_Digicel_NO+$c_Telecom_NO+$c_Telefonica_NO+$c_Tigo_NO;
 $Totales = $Exitosos + $Fallidos;
 
-echo "<h1>Este es el centro de estadisticas (1.2).<br />@ " . $_SERVER['SERVER_NAME'] . "</h1><hr />";
+echo "<h1>Este es el centro de estadisticas (1.3 [PRE]).<br />@ " . $_SERVER['SERVER_NAME'] . "</h1><hr />";
 echo "<h2>General</h2>";
 if ($numdias == 0){
     echo "Aun no se han recolectado estadisticas";
@@ -152,7 +152,7 @@ echo "<h3>Eficiencia de envio por compañías.</h3>Porcentaje de envios exitosos
 $graph->type = "pBar";
 $graph->legend = "";
 $graph->showValues = 0;
-$graph->barColors = "#E0E0E0,#E0E0E0,#E0E0E0,#E0E0E";
+$graph->barColors = "#E0E0E0,#E0E0E0,#E0E0E0,#E0E0E0";
 $graph->labels = "Digicel,Telefonica/Movistar,Telecom/Claro,Telemovil/Tigo";
 $graph->values = $c_Digicel_OK.";".($c_Digicel_OK + $c_Digicel_NO).", ".$c_Telefonica_OK.";".($c_Telefonica_OK + $c_Telefonica_NO).", ".$c_Telecom_OK.";".($c_Telecom_OK + $c_Telecom_NO).", ".$c_Tigo_OK.";".($c_Tigo_OK +$c_Tigo_NO);
 echo $graph->create();

@@ -553,9 +553,11 @@ pre
   top:    0;
   /* using padding here instead of margin,
      because MSIE misinterprets the box-model. */
-  padding-right: 160px;
-  padding-left:  160px;
-  padding-top:   0;
+  padding-right: 10px;
+  padding-left:  10px;
+  padding-top:   5px;
+  padding-bottom: 10px;
+  
 }
 
 #rightwrapper
