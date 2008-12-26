@@ -93,7 +93,17 @@ if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
  }
  else{
      // No soporta wml (o no quiere xD)
-     $plantilla = $home."/plantilla/mensajitos.htm";
+    /*****************************************/ 
+    //Será que quiere un modo de presentación especial?
+	if ( isset($_GET['visual']) ) {
+		switch ( $_GET['visual'] ) {
+			case "iframe":
+				$plantilla = $home."/plantilla/mensajitos.iframe.htm";
+				break;
+		}
+	} else {
+	$plantilla = $home."/plantilla/mensajitos.htm";
+	}
      $mime = "text/html";
  }
  
