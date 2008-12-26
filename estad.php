@@ -1,6 +1,21 @@
 <?php 
 ob_start("ob_gzhandler");
-header("Content-Type:text/html; charset=UTF-8");
+echo
+'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+     <head>
+     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+     <meta http-equiv="Content-Style-type" content="text/css" />
+     <meta http-equiv="Content-Script-type" content="text/javascript" />
+     <meta http-equiv="Content-Language" content="es" />
+     <link rel="StyleSheet" href="estilo.css" type="text/css" />
+     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+     <link rel="start" href="/" />
+     <title>Instalador de xMensajitos.php</title>
+     </head>
+     <body>
+     <div id="centerwrapper">
+     <div id="content">';
 require_once(dirname(__FILE__)."/libs/graphs.inc.php" );
 require_once(dirname(__FILE__)."/libs/iniparser.php" );
 require_once(dirname(__FILE__)."/datos/data.php"); //Datos del servidor MySQL
@@ -106,19 +121,19 @@ echo "Mensajes fallidos por dia: <b>".ceil($Fallidos/$numdias)."</b><br />";
 $graph = new BAR_GRAPH("hBar");
 $graph->showValues = 1;
 $graph->barColors = "#E0E0E0,#0E0E0E";
-$graph->barBGColor = "white";
+$graph->barBGColor = "";
 $graph->barBorder = "1px solid #808080";
 $graph->labelColor = "#A0A0A0";
 $graph->labelBGColor = "";
 $graph->labelBorder = "1px dashed #A0A0A0";
 $graph->labelFont = "Arial Black, Arial, Helvetica";
 $graph->labelSize = 16;
-$graph->absValuesColor = "silver";
-$graph->absValuesBGColor = "white";
+$graph->absValuesColor = "#A0A0A0";
+$graph->absValuesBGColor = "";
 $graph->absValuesBorder = "1px solid silver";
 $graph->absValuesFont = "Verdana, Arial, Helvetica";
 $graph->absValuesSize = 14;
-$graph->percValuesColor = "#C0C0C0";
+$graph->percValuesColor = "#A0A0A0";
 $graph->percValuesFont = "Comic Sans MS, Times New Roman";
 $graph->percValuesSize = 16;
 // Fin de configuración del graficador.
@@ -153,4 +168,9 @@ if ( $MiBD_OK ) {
     echo "<br />¡<b>".ceil(($c_Visitas_HTML+$c_Visitas_WAP)/$numdias)."</b> visitas por dia!<br />";
  }
 echo "<hr /><h2>Copyright</h2>Mensajitos.php es un proyecto creado por <b>mxgxw</b> -> www.nohayrazon.com<br />Este es Mensajitos.php TSV, una version modificada por <b>Vlad</b> del software Mensajitos.php<br />";
+echo
+'</div>
+</div>
+</body>
+</html>';
 ?> 
