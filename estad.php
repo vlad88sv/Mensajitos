@@ -82,7 +82,7 @@ $Exitosos = $c_Digicel_OK+$c_Telecom_OK+$c_Telefonica_OK+$c_Tigo_OK;
 $Fallidos = $c_Digicel_NO+$c_Telecom_NO+$c_Telefonica_NO+$c_Tigo_NO;
 $Totales = $Exitosos + $Fallidos;
 
-echo "<h1>Este es el centro de estadisticas (1.2 PRE).<br />@ " . $_SERVER['SERVER_NAME'] . "</h1><hr />";
+echo "<h1>Este es el centro de estadisticas (1.2).<br />@ " . $_SERVER['SERVER_NAME'] . "</h1><hr />";
 echo "<h2>General</h2>";
 if ($numdias == 0){
     echo "Aun no se han recolectado estadisticas";

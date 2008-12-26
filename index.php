@@ -27,7 +27,7 @@ header("Content-Type:text/html; charset=UTF-8");
  Más información: http://xmensajitos.todosv.com
 */
 // Definimos las constantes de directorios para poder accesarlas desde todo el codigo
-$MiVersion = ' 2.20.0 [PRE]';
+$MiVersion = ' 2.20.0';
 $home = dirname(__FILE__);
 $plantilla = $home."/plantilla/mensajitos.htm";
 $modulos = array('Digicel','Telecom','Red','Telefonica','Tigo');
