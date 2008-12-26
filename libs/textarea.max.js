@@ -6,7 +6,7 @@ function setMaxLength() {
 		if (x[i].getAttribute('maxlength')) {
 			var counterClone = counter.cloneNode(true);
 			counterClone.relatedElement = x[i];
-			counterClone.innerHTML = '<span>0</span>/'+x[i].getAttribute('maxlength');
+			counterClone.innerHTML = 'Ha utilizado <span>0</span> de '+x[i].getAttribute('maxlength')+' caracteres disponibles';
 			x[i].parentNode.insertBefore(counterClone,x[i].nextSibling);
 			x[i].relatedElement = counterClone.getElementsByTagName('span')[0];
 			x[i].onkeypress = checkMaxLength;

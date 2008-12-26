@@ -56,11 +56,11 @@ function TOOLTIP() {
 // Configuration
 //----------------------------------------------------------------------------------------------------
   this.width = 400;                     // width (pixels)
-  this.bgColor = "#E0E0E0";             // background color
+  this.bgColor = "#FFFFFF";             // background color
   this.textFont = "Comic Sans MS";      // text font family
-  this.textSize = 13;                   // text font size (pixels)
+  this.textSize = 14;                   // text font size (pixels)
   this.textColor = "#000000";           // text color
-  this.border = "1px dashed #D00000";   // border (CSS spec: size style color, e.g. "1px solid #D00000")
+  this.border = "1px dashed #E0E6FF";   // border (CSS spec: size style color, e.g. "1px solid #D00000")
   this.opacity = 80;                    // opacity (0 - 100); not supported by all browsers
   this.cursorDistance = 5;              // distance from mouse cursor (pixels)
 

@@ -14,16 +14,15 @@
 <body onload="setMaxLength();">
 <div id="centerwrapper">
 <div id="content">
-<br />
 <form action="{script}" method="post">
 <h2>Tel&eacute;fono</h2>
-<div align="center"><input type="text" name="telefono" maxlength="8" size="10" value="{uNumero}" onMouseOver="toolTip('Ingrese aquí el número de telefono.')" onMouseOut="toolTip()" /></div>
+<div align="center"><input type="text" name="telefono" maxlength="8" size="10" value="{uNumero}" onMouseOver="toolTip('Ingrese aquí el número de telefono.<br />Máximo 8 dígitos.')" onMouseOut="toolTip()" /></div>
 <h2>Mensaje</h2>
-<div align="center"><textarea name="mensaje" rows="6" cols="110" maxlength="110" onMouseOver="toolTip('Ingrese aquí su mensaje.<BR />Máximo 110 carácteres.')" onMouseOut="toolTip()" >{uMensaje}</textarea></div>
+<div align="center"><textarea name="mensaje" rows="6" cols="110" maxlength="110" onMouseOver="toolTip('Ingrese aquí su mensaje.<br />Máximo 110 caracteres.')" onMouseOut="toolTip()" >{uMensaje}</textarea></div>
 <h2>Firma</h2>
-<div align="center"><input type="text" name="firma" size="10" value="{uFirma}" maxlength="10" onMouseOver="toolTip('Ingrese aqui su nombre o firma.')" onMouseOut="toolTip()" /></div>
+<div align="center"><input type="text" name="firma" size="10" value="{uFirma}" maxlength="10" onMouseOver="toolTip('Ingrese aqui su nombre o firma.<br />Máximo 10 caracteres.')" onMouseOut="toolTip()" /></div>
 <h2>Opciones</h2>
-<div align="center"><input type="reset" name="borrar" value="Borrar todo" /><input type="submit" name="enviar" value="¡Enviar Mensaje!" /></div>
+<div align="center"><input type="reset" name="borrar" value="Borrar todo"  onMouseOver="toolTip('Reiniciar formulario de envio de este mensajito.')" onMouseOut="toolTip()" /><input type="submit" name="enviar" value="¡Enviar Mensaje!"  onMouseOver="toolTip('Envía el mensaje.')" onMouseOut="toolTip()" /></div>
 </form>
 <h2>Información</h2>
 {estado}

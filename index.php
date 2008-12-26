@@ -404,7 +404,7 @@ if(isset($_SERVER['REQUEST_URI']))
 //Accion del POST
 
 //Informacion del formulario
-$vars["{version}"] = '<a href="http://www.todosv.com">Version ' . $MiVersion . '</a><br /><a href="estad.php" target="_blank">Estadísticas</a>';
+$vars["{version}"] = '<a href="http://www.todosv.com" target="_blank">Version ' . $MiVersion . '</a><br /><a href="estad.php" target="_blank">Estadísticas</a>';
 $vars["{estado}"] = $estado;
 $vars["{operador}"] = $ret;
 $vars["{uNumero}"] = $telefono;
