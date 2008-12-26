@@ -1,7 +1,7 @@
 body
 {
   color:             #111;
-  background-color:  #C9D0D6;
+  background-color:  #C0C0C0;
   font-family:       "Tahoma", "Verdana", "Arial", serif;
   font-size:         13px;
 
@@ -10,6 +10,13 @@ body
   margin:  12px;
 }
 
+  input[type=text],
+  textarea,
+  input[type=password]
+  {
+	  background-color:#E0E6FF;
+	  color:#003264;}
+	}
 /* --------- page title --------- */
 
 #top
