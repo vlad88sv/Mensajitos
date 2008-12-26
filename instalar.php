@@ -76,11 +76,7 @@ Si Ud. no configura el acceso a la base de datos, entonces las siguientes caract
     
     $fh = @fopen("datos/data.php", 'w') or die("No se pudo escribir 'data.php'.<br />");
     if ($fh) {
-        $Datos = "<?php\n";
-        fwrite($fh, $Datos);
-        $Datos = '$fecha_instalacion = "'. $fecha_instalacion .'"'.";\n" . '$MiBD_IP = "'. $_POST['motor'] .'"'.";\n" . '$MiBD_usuario = "'. $_POST['usuario'] .'"' .";\n". '$MiBD_clave = "'. $_POST['clave'] .'"' .";\n" . '$MiBD_BD = "'. $_POST['base'] . '"' .";\n";
-        fwrite($fh, $Datos);
-        $Datos = "?>\n";
+        $Datos = '<?php\n$fecha_instalacion = "'. $fecha_instalacion .'"'.";\n" . '$MiBD_IP = "'. $_POST['motor'] .'"'.";\n" . '$MiBD_usuario = "'. $_POST['usuario'] .'"' .";\n". '$MiBD_clave = "'. $_POST['clave'] .'"' .";\n" . '$MiBD_BD = "'. $_POST['base'] . '"' .";\n?>\n";
         fwrite($fh, $Datos);
         fclose($fh);
     }
