@@ -26,18 +26,36 @@ header("Content-Type:text/html; charset=UTF-8");
  Contacto: vladimiroski@gmail.com
  Más información: http://xmensajitos.todosv.com
 */
-// Definimos las constantes de directorios para poder accesarlas desde todo el codigo
 $MiVersion = '2.21.0 [PRE]';
+// Definimos las constantes de directorios para poder accesarlas desde todo el codigo
 $home = dirname(__FILE__);
+// Plantilla HTML por defecto.
 $plantilla = $home."/plantilla/mensajitos.htm";
+// Nombre de los modulos disponibles
 $modulos = array('Digicel','Telecom','Red','Telefonica','Tigo');
-require_once($home."/datos/data.php"); //Datos del servidor MySQL
+// En data.php se almacenan los datos de acceso al servidor MySQL.
+// Este archivo es creado vía /instalar.php
+require_once($home."/datos/data.php");
+
+//**************************************************
+// Si no hay soporte MySQL:
+
+// Este archivo guarda los datos para el control de Flood
 $nMDB = $home."/datos/numeros.db";
+// Este archivo guarda las estadísticas
 $cMDB = $home."/datos/cuentas.db";
+// Este archivo guarda los números fuera de rango
 $r_fuera_de_rango = $home."/datos/fuera_rango.db";
+// Cargamos la Clase necesaria para manipular INIs
 require_once($home."/libs/iniparser.php" );
+//**************************************************
+
+// Cargamos la Clase para comunicarnos con POST/GET facilmente
 require_once($home."/libs/snoopy.php");
+// Nuestras funciones para uso de proxys
 require_once($home."/libs/proxymity.php");
+// Pre-cargamos todos los modulos
+// Esto tiene que ser mejorado, se debe cargar solo el modulo necesario al enviar el mensaje
 foreach($modulos as $item => $elemento)
 require_once($home."/modulos/".$elemento.".php");
 /*************************************************************************/
@@ -205,7 +223,7 @@ function ModuloOperador($pre) {
        (($pre>=76000000)&&($pre<=76699999))||
        (($pre>=77400000)&&($pre<=77599999))||
        (($pre>=78050000)&&($pre<=78099999))||
-       (($pre>=78400000)&&($pre<=78699999))||
+       (($pre>=78500000)&&($pre<=78699999))||
        (($pre>=79500000)&&($pre<=79699999))||
        (($pre>=79850000)&&($pre<=79899999))) {
         return $modulos[1]; //Telecom
@@ -215,7 +233,7 @@ function ModuloOperador($pre) {
         return $modulos[2]; //Red
     }
     
-    if((($pre>=71000000)&&($pre<=71899999))||
+    if((($pre>=71000000)&&($pre<=71999999))||
        (($pre>=77000000)&&($pre<=77199999))||
        (($pre>=77800000)&&($pre<=77849999))||
        (($pre>=77900000)&&($pre<=77949999))||
