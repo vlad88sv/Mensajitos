@@ -26,7 +26,7 @@ header("Content-Type:text/html; charset=UTF-8");
  Contacto: vladimiroski@gmail.com
  Más información: http://xmensajitos.todosv.com
 */
-$MiVersion = '2.21.0 [PRE]';
+$MiVersion = '2.21.0';
 // Definimos las constantes de directorios para poder accesarlas desde todo el codigo
 $home = dirname(__FILE__);
 // Plantilla HTML por defecto.
