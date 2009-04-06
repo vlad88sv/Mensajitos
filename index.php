@@ -102,7 +102,7 @@ $limite_flood_ip = 100; //Numero maximo de mensajes por $intervalo_flood desde 1
 $intervalo_flood = 3600; //Intervalo de flood (en segundos)
 $filtro = array(".*(hsbc).*", ".*(citibank).*", ".*(banco agr?cola).*", ".*(banco cu?catl?n).*", ".*(mora|moroso) .*", ".*(deud.{1,2}) .*");
 /*************************************************************************/
- 
+
 if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
 	// Es un dispositivo movil, soporta WML
 	$plantilla = $home."/plantilla/mensajitos.wml";
@@ -111,7 +111,7 @@ if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
  }
  else{
      // No soporta wml (o no quiere xD)
-    /*****************************************/ 
+    /*****************************************/
     //Será que quiere un modo de presentación especial?
 	if ( isset($_GET['visual']) ) {
 		switch ( $_GET['visual'] ) {
@@ -124,7 +124,7 @@ if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
 	}
      $mime = "text/html";
  }
- 
+
 if ( $MiBD_OK ) {
     InsertarValorSQL("xsms_estadisticas", "'$mime','1'", "valor=valor+1");
  }
@@ -186,7 +186,7 @@ function agregarNumFueraDeRango($Numero){
 
 function procesarPlantilla($archivo,$valores) {
     $buffer = file_get_contents($archivo);
-    foreach($valores as $var=>$val) { 
+    foreach($valores as $var=>$val) {
         $buffer = str_replace($var,$val,$buffer);
     }
     return $buffer;
@@ -223,16 +223,16 @@ function ModuloOperador($pre) {
        (($pre>=76000000)&&($pre<=76699999))||
        (($pre>=77400000)&&($pre<=77599999))||
        (($pre>=78050000)&&($pre<=78099999))||
-       (($pre>=78500000)&&($pre<=78699999))||
+       (($pre>=78400000)&&($pre<=78699999))||
        (($pre>=79500000)&&($pre<=79699999))||
        (($pre>=79850000)&&($pre<=79899999))) {
         return $modulos[1]; //Telecom
     }
-    
+
     if(($pre>=79800000)&&($pre<=79839999)) {
         return $modulos[2]; //Red
     }
-    
+
     if((($pre>=71000000)&&($pre<=71999999))||
        (($pre>=77000000)&&($pre<=77199999))||
        (($pre>=77800000)&&($pre<=77849999))||
@@ -362,7 +362,7 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
                 // Si, ha escrito un mensaje ahora buscar un operador para el numero.
                 $modulo = ModuloOperador($telefono);
                 if($modulo) {
-                    $nombreMod = $modulo."_Nombre"; 
+                    $nombreMod = $modulo."_Nombre";
                     $ret = $nombreMod();
                     $FEnvio = $modulo."_Enviar";
                     if($FEnvio($telefono,$mensaje,$firma)) {
@@ -397,7 +397,7 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
                             $cuenta = $I_cMDB->getValue("Companias", $modulo."-ERR");
                             $I_cMDB->setValue( "Companias", $modulo."-ERR",$cuenta += 1);
                         }
-                    }			
+                    }
                 } else {
                     $ret = "Sin Operador";
                     $estado = $mensajeOPEP;
@@ -408,7 +408,7 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
             }
         }
         if ( $MiBD_OK ) {
-        }else {    
+        }else {
             $I_cMDB->save();
             $I_nMDB->save();
         }
