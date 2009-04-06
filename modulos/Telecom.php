@@ -5,10 +5,9 @@ function Telecom_Nombre()
 } 
 function Telecom_Enviar($telefono, $mensaje, $firma)
 {
-    $headers = 'From: noticlaro@sms.claro.com.sv' . "\n" .
-        'Reply-To: noticlaro@sms.claro.com.sv' . "\n";
+    $headers = 'From: noticlaro@sms.claro.com.sv' ."\r\n" .
+        'Reply-To: noticlaro@sms.claro.com.sv' . "\r\n";
     $to = $telefono."@sms.claro.com.sv";
-	//$to "vladimiroski@gmail.com";
     $subject = $firma;
     $body = $mensaje;
     if (mail($to, $subject, $body, $headers)) {
