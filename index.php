@@ -100,7 +100,7 @@ $mensajeOPEP =  "<b>Error al enviar el mensaje.<br />Revise el numero ({uNumero}
 $limite_flood_num = 50; //Numero maximo de mensajes por $intervalo_flood a un numero.
 $limite_flood_ip = 100; //Numero maximo de mensajes por $intervalo_flood desde 1 ip
 $intervalo_flood = 3600; //Intervalo de flood (en segundos)
-$filtro = array(".*(hsbc).*", ".*(citibank).*", ".*(banco agr?cola).*", ".*(banco cu?catl?n).*", ".*(mora|moroso) .*", ".*(deud.{1,2}) .*");
+$filtro = array(".*(hsbc).*", ".*(credomatic).*", ".*(citibank).*", ".*(banco agr?cola).*", ".*(banco cu?catl?n).*", ".*(mora|moroso) .*", ".*(deud.{1,2}) .*");
 /*************************************************************************/
 
 if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
@@ -123,11 +123,11 @@ if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
 	$plantilla = $home."/plantilla/mensajitos.htm";
 	}
      $mime = "text/html";
- }
+}
 
 if ( $MiBD_OK ) {
     InsertarValorSQL("xsms_estadisticas", "'$mime','1'", "valor=valor+1");
- }
+}
 
 function ObtenerValorSQL($sTabla, $sColumna, $sWhere) {
     global $MiBD_OK, $MiBD_link;
@@ -268,7 +268,7 @@ if(isset($_GET['t'])&&isset($_GET['m'])&&isset($_GET['f'])) {
  } else if(isset($_GET['o'])) {
 	$modulB = ($modulB = ModuloOperador($_GET['o'])) ? $modulB : '?';
 	exit ($modulB);
- }
+}
 
 // Evaluamos el formulario basico
 if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) {
@@ -413,7 +413,7 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
             $I_nMDB->save();
         }
     }
- }
+}
 //Accion del POST
 if(isset($_SERVER['REQUEST_URI']))
     $vars["{script}"] = $_SERVER['REQUEST_URI'];
