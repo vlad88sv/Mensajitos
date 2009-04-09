@@ -49,12 +49,19 @@ for ($i=0; $i < count($lines); $i++) {
         if (preg_match("/^Subject: (.*)/", $lines[$i], $matches)) {
             $subject = $matches[1];
         }
-        if (preg_match("/^From: .*<(.*)>.*/", $lines[$i], $matches)) {
+        if (preg_match("/^From: .*<(.*)>.*/", $lines[$i], $matches) && !$from) {
             $from = $matches[1];
         }
-        if (preg_match("/^To: [<]{0,1}(.*)@/", $lines[$i], $matches)) {
+        if (preg_match("/^To: [<]{0,1}(.*)@/", $lines[$i], $matches) && !$to) {
             $to = $matches[1];
         }
+        if (preg_match("/^X-Forwarded-For: (.*) .*/", $lines[$i], $matches)) {
+            $from = $matches[1];
+        }
+        if (preg_match("/^X-Forwarded-To: (.*)@/", $lines[$i], $matches)) {
+            $to = $matches[1];
+        }
+
     } else {
         // not a header, but message
         $message .= $lines[$i]."\n";
@@ -67,9 +74,10 @@ for ($i=0; $i < count($lines); $i++) {
 }
 
 $message = substr(str_replace("\n"," ",$message),0,110);
-//echo $from . "\n";
-//echo $to . "\n";
-//echo $subject . "\n";
+//@file_put_contents("d_".time(),$email);
+//echo "FROM:" . $from . "\n";
+//echo "TO:" . $to . "\n";
+//echo "SUBJECT:" . $subject . "\n";
 //echo $message . "\n";
 tsv_sms_enviar($to, $subject, $from);
 exit(0);
