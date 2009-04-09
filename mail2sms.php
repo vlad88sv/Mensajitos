@@ -23,7 +23,7 @@ return $response;
 
 function tsv_sms_enviar($telefono, $mensaje, $firma){
     $datos = array('telefono' => $telefono, 'mensaje' => $mensaje, 'firma' => $firma, 'enviar' => '¡Enviar Mensaje!');
-    do_post_request('http://sms.todosv.com/index.php',  http_build_query($datos));
+    return do_post_request('http://sms.todosv.com/index.php?visual=estado',  http_build_query($datos));
 }
 
 // read from stdin
@@ -74,11 +74,21 @@ for ($i=0; $i < count($lines); $i++) {
 }
 
 $message = substr(str_replace("\n"," ",$message),0,110);
+
 //@file_put_contents("d_".time(),$email);
 //echo "FROM:" . $from . "\n";
 //echo "TO:" . $to . "\n";
 //echo "SUBJECT:" . $subject . "\n";
 //echo $message . "\n";
-tsv_sms_enviar($to, $subject, $from);
+if ( stristr($to,"_r") ) {
+	$flag_mail = true;
+	$to = str_replace("_r","",$to);
+} else {
+	$flag_mail = false;
+}
+
+$body = tsv_sms_enviar($to, $subject, $from);
+$headers = 'From: robot@sms.todosv.com' ."\r\n" . 'Reply-To: no_responder_aqui@todosv.com' . "\r\n";
+if ($flag_mail) @mail($from,"Estado del mensaje a $to",$body, $headers);
 exit(0);
 ?>
