@@ -88,7 +88,7 @@ if ( stristr($to,"_r") ) {
 }
 
 $body = tsv_sms_enviar($to, $subject, $from);
-$headers = 'From: robot@sms.todosv.com' ."\r\n" . 'Reply-To: no_responder_aqui@todosv.com' . "\r\n";
-if ($flag_mail) @mail($from,"Estado del mensaje a $to",$body, $headers);
+$headers =  'MIME-Version: 1.0' . "\r\n" . 'Content-type: text/html; charset=iso-8859-1' . "\r\n" . 'From: robot@sms.todosv.com' ."\r\n" . 'Reply-To: no_responder_aqui@todosv.com' . "\r\n";
+if ($flag_mail) @mail($from,"Estado del mensaje a $to","<html><head><title>Correo de respuesta solicitado por su mensaje enviado a $to</title></head><body>".$body."</body></html>", $headers);
 exit(0);
 ?>
