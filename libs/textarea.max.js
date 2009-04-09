@@ -6,7 +6,7 @@ function setMaxLength() {
 		if (x[i].getAttribute('maxlength')) {
 			var counterClone = counter.cloneNode(true);
 			counterClone.relatedElement = x[i];
-			counterClone.innerHTML = 'Ha utilizado <span>0</span> de '+x[i].getAttribute('maxlength')+' caracteres disponibles';
+			counterClone.innerHTML = 'Utilizados <span>0</span> caracteres de '+x[i].getAttribute('maxlength')+' disponibles';
 			x[i].parentNode.insertBefore(counterClone,x[i].nextSibling);
 			x[i].relatedElement = counterClone.getElementsByTagName('span')[0];
 			x[i].onkeypress = checkMaxLength;
@@ -31,6 +31,6 @@ function checkMaxLength(evt) {
 	} else {
 		this.relatedElement.className = '';
 	}
-	
+
 	return (currentLength < maxLength);
 }
