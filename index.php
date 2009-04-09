@@ -209,8 +209,7 @@ function DenegarFiltro($mensaje) {
 // Detecta el modulo a utilizar en base al numero de telefono
 function ModuloOperador($pre) {
     global $modulos;
-    if((($pre>=73000000)&&($pre<=73349999))||
-       (($pre>=73350000)&&($pre<=73799999))||
+    if((($pre>=73000000)&&($pre<=73799999))||
        (($pre>=73800000)&&($pre<=73999999))||
        (($pre>=77600000)&&($pre<=77799999))||
        (($pre>=79700000)&&($pre<=79799999))) {
@@ -245,7 +244,7 @@ function ModuloOperador($pre) {
     }
 
     if((($pre>=72000000)&&($pre<=72999999))||
-       (($pre>=75000000)&&($pre<=75999999))||
+       (($pre>=74000000)&&($pre<=75999999))||
        (($pre>=76000000)&&($pre<=76099999))||
        (($pre>=77200000)&&($pre<=77399999))||
        (($pre>=77850000)&&($pre<=77899999))||
@@ -431,5 +430,4 @@ $vars["{uFirma}"] = $firma;
 
 // Sustituimos los valores en la plantilla:
 echo procesarPlantilla($plantilla,$vars);
-return 0
 ?>
