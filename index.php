@@ -118,6 +118,9 @@ if(stristr($_SERVER['HTTP_ACCEPT'],"text/vnd.wap.wml")){
 			case "iframe":
 				$plantilla = $home."/plantilla/mensajitos.iframe.htm";
 				break;
+			case "estado":
+				$plantilla = $home."/plantilla/mensajitos.estado.htm";
+				break;
 		}
 	} else {
 	$plantilla = $home."/plantilla/mensajitos.htm";
