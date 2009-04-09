@@ -12,23 +12,21 @@
 <script type="text/javascript" src="libs/textarea.max.js"></script>
 <script type="text/javascript" src="libs/tooltip.js"></script>
 <body onload="setMaxLength();">
-<div id="centerwrapper">
-<div id="content">
+<div id="contenido">
 <form action="{script}" method="post">
-<h2>Tel&eacute;fono</h2>
-<div align="center"><input type="text" name="telefono" maxlength="8" size="10" value="{uNumero}" onMouseOver="toolTip('Ingrese aquí el número de telefono.<br />Máximo 8 dígitos.')" onMouseOut="toolTip()" /></div>
-<h2>Mensaje</h2>
-<div align="center"><textarea name="mensaje" rows="6" cols="110" maxlength="110" onMouseOver="toolTip('Ingrese aquí su mensaje.<br />Máximo 110 caracteres.')" onMouseOut="toolTip()" >{uMensaje}</textarea></div>
-<h2>Firma</h2>
-<div align="center"><input type="text" name="firma" size="10" value="{uFirma}" maxlength="10" onMouseOver="toolTip('Ingrese aqui su nombre o firma.<br />Máximo 10 caracteres.')" onMouseOut="toolTip()" /></div>
-<h2>Opciones</h2>
-<div align="center"><input type="reset" name="borrar" value="Borrar todo"  onMouseOver="toolTip('Reiniciar formulario de envio de este mensajito.')" onMouseOut="toolTip()" /><input type="submit" name="enviar" value="¡Enviar Mensaje!"  onMouseOver="toolTip('Envía el mensaje.')" onMouseOut="toolTip()" /></div>
+<h1>Tel&eacute;fono</h1>
+<input type="text" name="telefono" maxlength="8" size="8" value="{uNumero}" onMouseOver="toolTip('Ingrese aquí el número de telefono.<br />Máximo 8 dígitos.')" onMouseOut="toolTip()" />
+<h1>Mensaje</h1>
+<textarea name="mensaje" rows="3" cols="40" maxlength="110" onMouseOver="toolTip('Ingrese aquí su mensaje.<br />Máximo 110 caracteres.')" onMouseOut="toolTip()" >{uMensaje}</textarea>
+<h1>Firma</h1>
+<input type="text" name="firma" size="10" value="{uFirma}" maxlength="10" onMouseOver="toolTip('Ingrese aqui su nombre o firma.<br />Máximo 10 caracteres.')" onMouseOut="toolTip()" />
+<h1>Opciones</h1>
+<input type="reset" name="borrar" value="Borrar todo"  onMouseOver="toolTip('Reiniciar formulario de envio de este mensajito.')" onMouseOut="toolTip()" /><input type="submit" name="enviar" value="¡Enviar Mensaje!"  onMouseOver="toolTip('Envía el mensaje.')" onMouseOut="toolTip()" />
 </form>
-<h2>Información</h2>
+<h1>Información</h1>
 {estado}
-<h2>Extra</h2>
+<h1>Extra</h1>
 <font size="1">{version}</font>
-</div>
 </div>
 </body>
 </html>
