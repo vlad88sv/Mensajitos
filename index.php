@@ -54,10 +54,6 @@ require_once($home."/libs/iniparser.php" );
 require_once($home."/libs/snoopy.php");
 // Nuestras funciones para uso de proxys
 require_once($home."/libs/proxymity.php");
-// Pre-cargamos todos los modulos
-// Esto tiene que ser mejorado, se debe cargar solo el modulo necesario al enviar el mensaje
-foreach($modulos as $item => $elemento)
-require_once($home."/modulos/".$elemento.".php");
 /*************************************************************************/
 // Tratamos de conectarnos a la base de datos, si lo conseguimos entonces
 // activamos la variable que indicará que se pueden utilizar las funciones
@@ -364,6 +360,7 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
                 // Si, ha escrito un mensaje ahora buscar un operador para el numero.
                 $modulo = ModuloOperador($telefono);
                 if($modulo) {
+                    require_once($home."/modulos/".$modulo.".php");
                     $nombreMod = $modulo."_Nombre";
                     $ret = $nombreMod();
                     $FEnvio = $modulo."_Enviar";
