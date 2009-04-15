@@ -1,4 +1,4 @@
-<?php 
+<?php
 ob_start("ob_gzhandler");
 echo
 '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -14,8 +14,7 @@ echo
      <title>Estadísticas de xMensajitos.php</title>
      </head>
      <body>
-     <div id="centerwrapper">
-     <div id="content">';
+     <div id="contenido" class="ancho izq">';
 require_once(dirname(__FILE__)."/libs/graphs.inc.php" );
 require_once(dirname(__FILE__)."/libs/iniparser.php" );
 require_once(dirname(__FILE__)."/datos/data.php"); //Datos del servidor MySQL
@@ -36,7 +35,7 @@ if ( !$MiBD_link ) {
     //la base de datos.
     $MiBD_OK = @mysql_select_db($MiBD_BD, $MiBD_link);
  }
- 
+
 function ObtenerValorSQL($sTabla, $sColumna, $sWhere) {
     global $MiBD_OK, $MiBD_link;
     if ( $MiBD_OK ) {
@@ -52,10 +51,12 @@ function ObtenerValorSQL($sTabla, $sColumna, $sWhere) {
 }
 
 function resta_fechas($fecha1,$fecha2) {
-    if (preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/([0-9][0-9]){1,2}/",$fecha1))           
+
+    if (preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/([0-9][0-9]){1,2}/",$fecha1))
 	list($dia1,$mes1,$anio1)=split("/",$fecha1);
-    if (preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/([0-9][0-9]){1,2}/",$fecha2))  
-	list($dia2,$mes2,$anio2)=split("/",$fecha2);     
+
+	if (preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/([0-9][0-9]){1,2}/",$fecha2))
+	list($dia2,$mes2,$anio2)=split("/",$fecha2);
     return((mktime(0,0,0,$mes1,$dia1,$anio1) - mktime(0,0,0,$mes2,$dia2,$anio2))/(24*60*60));
 }
 
@@ -97,7 +98,7 @@ $Exitosos = $c_Digicel_OK+$c_Telecom_OK+$c_Telefonica_OK+$c_Tigo_OK;
 $Fallidos = $c_Digicel_NO+$c_Telecom_NO+$c_Telefonica_NO+$c_Tigo_NO;
 $Totales = $Exitosos + $Fallidos;
 
-echo "<h1>Este es el centro de estadisticas (1.3 [PRE]).<br />@ " . $_SERVER['SERVER_NAME'] . "</h1><hr />";
+echo "<h1>Este es el centro de estadisticas (1.3 [PRE]).<br />Ubicado en " . $_SERVER['SERVER_NAME'] . "</h1><hr />";
 echo "<h2>General</h2>";
 if ($numdias == 0){
     echo "Aun no se han recolectado estadisticas";
@@ -170,7 +171,6 @@ if ( $MiBD_OK ) {
 echo "<hr /><h2>Copyright</h2>Mensajitos.php es un proyecto creado por <b>mxgxw</b> -> www.nohayrazon.com<br />Este es Mensajitos.php TSV, una version modificada por <b>Vlad</b> del software Mensajitos.php<br />";
 echo
 '</div>
-</div>
 </body>
 </html>';
-?> 
+?>
