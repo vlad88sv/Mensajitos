@@ -3,8 +3,12 @@ html
 body
 {background-color:#C0C0C0;margin:0;padding:0;}
 h1
-{background-color:#C9D0D6;margin-bottom:1px;padding:5px;font-size:90%}
+{background-color:#C9D0D6;margin:0;margin-bottom:1px;padding:5px;font-size:90%}
 input[type="text"], textarea, input[type="password"]
 {background-color:#EFF0FF;color:#003264;}
 #contenido
 {position:relative;top:50px;background-color:#FAFAFA;width:30%;padding:0;margin:auto;text-align:center}
+#contenido.ancho
+{width:90%;}
+#contenido.izq
+{text-align:left;padding:5px;}
