@@ -1,13 +1,7 @@
 [Companias]
-Telefonica-OK=0
-Telefonica-ERR=0
-Telecom-OK=0
-Telecom-ERR=0
-Tigo-OK=0
-Tigo-ERR=0
-Digicel-OK=0
-Digicel-ERR=0
-Red-OK=0
-[Hits]
-HTML=1
-WML=1
+Telecom-OK = 4
+Digicel-OK = 10
+Tigo-OK = 30
+Tigo-ERR = 1
+Telefonica-ERR = 1
+

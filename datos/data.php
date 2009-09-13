@@ -1,7 +1,7 @@
 <?php
-$fecha_instalacion = "1229954296";
+$fecha_instalacion = "1229781496";
 $MiBD_IP = "localhost";
-$MiBD_usuario = "sms";
-$MiBD_clave = "xsms";
-$MiBD_BD = "xsms";
+$MiBD_usuario = "todosvc";
+$MiBD_clave = "puravida";
+$MiBD_BD = "todosvc_smf1";
 ?>

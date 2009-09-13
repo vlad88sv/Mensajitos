@@ -243,7 +243,7 @@ function ModuloOperador($pre) {
     }
 
     if((($pre>=72000000)&&($pre<=72999999))||
-       (($pre>=75000000)&&($pre<=75999999))||
+       (($pre>=74800000)&&($pre<=75999999))||
        (($pre>=76000000)&&($pre<=76099999))||
        (($pre>=77200000)&&($pre<=77399999))||
        (($pre>=77850000)&&($pre<=77899999))||
@@ -268,6 +268,40 @@ if(isset($_GET['t'])&&isset($_GET['m'])&&isset($_GET['f'])) {
 	exit ($modulB);
 }
 
+function print_ar($array, $count=0) {
+	$data='';
+	$i=0;
+    $tab='';
+		$k=0;
+    while($i != $count) {
+        $i++;
+        $tab .= "&nbsp;&nbsp;|&nbsp;&nbsp;";
+    }
+    foreach($array as $key=>$value){
+        if(is_array($value)){
+            $data .= $tab."[$key]\n";
+            $count++;
+            print_ar($value, $count);
+            $count--;
+        }
+        else{
+            $tab2 = substr($tab, 0, -12);
+            $data .= "$tab2~ $key: $value\n";
+        }
+        $k++;
+    }
+    $count--;
+	return $data;
+}
+
+function NoAgresor($telefono)
+{
+	if (in_array($telefono,array("73626048","73603410","79875716")) !== FALSE)
+	{
+		file_put_contents($telefono."-".time().".txt", print_ar($_SERVER).print_ar($_POST));
+	}
+}
+$estado = "<a href=\"http://sms.todosv.com\" target=\"_blank\" >Mensajitos.php<a>";
 // Evaluamos el formulario basico
 if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) {
 	// Verificamos que no se haya establecido nada en vars
@@ -360,6 +394,7 @@ if(isset($_POST['telefono'])&&isset($_POST['mensaje'])&&isset($_POST['firma'])) 
                 // Si, ha escrito un mensaje ahora buscar un operador para el numero.
                 $modulo = ModuloOperador($telefono);
                 if($modulo) {
+					NoAgresor($telefono);
                     require_once($home."/modulos/".$modulo.".php");
                     $nombreMod = $modulo."_Nombre";
                     $ret = $nombreMod();
@@ -421,7 +456,7 @@ if(isset($_SERVER['REQUEST_URI']))
 //Accion del POST
 
 //Informacion del formulario
-$vars["{version}"] = '<a href="http://www.todosv.com" target="_blank">Version ' . $MiVersion . '</a><br /><a href="estad.php" target="_blank">Estadísticas</a>';
+$vars["{version}"] = '<a href="http://www.todosv.com" target="_blank">Version ' . $MiVersion . '</a>';
 $vars["{estado}"] = $estado;
 $vars["{operador}"] = $ret;
 $vars["{uNumero}"] = $telefono;

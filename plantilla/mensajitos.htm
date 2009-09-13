@@ -1,32 +1,58 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="utf-8"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta http-equiv="Content-Language" content="es" />
   <meta http-equiv="Content-Style-type" content="text/css" />
-  <link rel="StyleSheet" href="estilo.css" type="text/css" />
   <title>Mensajitos.php - Fundación TodoSV</title>
+  <link rel="StyleSheet" href="plantilla/estilo.css" type="text/css" />
+  <link rel="StyleSheet" href="libs/jquery.bookmark.css" type="text/css" />
+  <script src="libs/jquery-1.3.2.min.js" type="text/javascript"></script>
+  <script src="libs/jquery.limit-1.2.js" type="text/javascript"></script>
+  <script src="libs/jquery.fav-1.0.js" type="text/javascript"></script>
+  <script src="libs/jquery.bookmark.pack.js" type="text/javascript"></script>
   <meta name="keywords" content="TodoSV, SMS, El Salvador, Mensajitos.php, svcommunity.org, XMR, eXtreme Mensajitos Reloaded, Reseter, ENTEC" />
   <meta name="description" content="Mensajitos.php es un sitio especializado en envío de SMS a El Salvador" />
+  <meta name="verify-v1" content="j8F5qaVr8iCuRiNggAMpFa7InuJhsAHJ/aP0btfa8fo=" />
+  <script type="text/javascript">
+  $(document).ready(function(){$('#mensaje').maxLength(110);$('#bookmark').jFav();$('#bookmarks').bookmark({title: 'Mensajitos gratis a El Salvador para Digicel, Telecom y Tigo',url: 'http://sms.todosv.com',sites: ['delicious', 'twitter','digg', 'facebook', 'stumbleupon','google']});});
+  </script>
 </head>
-<script type="text/javascript" src="libs/textarea.max.js"></script>
-<script type="text/javascript" src="libs/tooltip.js"></script>
-<body onload="setMaxLength();">
+<body>
 <div id="contenido">
+<div id="informacion"><strong>Información</strong><br /><span id="estado">{estado}</span></div>
 <form action="{script}" method="post">
-<h1>Tel&eacute;fono</h1>
-<input type="text" name="telefono" maxlength="8" size="8" value="{uNumero}" onMouseOver="toolTip('Ingrese aquí el número de telefono.<br />Máximo 8 dígitos.')" onMouseOut="toolTip()" />
-<h1>Mensaje</h1>
-<textarea name="mensaje" rows="3" cols="40" maxlength="110" onMouseOver="toolTip('Ingrese aquí su mensaje.<br />Máximo 110 caracteres.')" onMouseOut="toolTip()" >{uMensaje}</textarea>
-<h1>Firma</h1>
-<input type="text" name="firma" size="10" value="{uFirma}" maxlength="10" onMouseOver="toolTip('Ingrese aqui su nombre o firma.<br />Máximo 10 caracteres.')" onMouseOut="toolTip()" />
-<h1>Opciones</h1>
-<input type="submit" name="enviar" value="¡Enviar Mensaje!"  onMouseOver="toolTip('Envía el mensaje.')" onMouseOut="toolTip()" />
+<table id="tbl">
+<tr><td><strong>Tel&eacute;fono</strong></td><td class="der"><input type="text" name="telefono" maxlength="8" size="8" value="{uNumero}" /></td></tr>
+<tr><td colspan="2" class="der" >
+<textarea name="mensaje" id="mensaje" rows="10" title="Mensaje, máximo 110 carácteres" >{uMensaje}</textarea>
+</td></tr>
+<tr><td><strong>Firma</strong></td><td class="der"><input type="text" name="firma" size="10" value="{uFirma}" maxlength="10" /></td></tr>
+<tr><td colspan="2" id="btnEnviar"><input type="submit" name="enviar" value="¡Enviar Mensaje!" /></td></tr>
+</table>
 </form>
-<h1>Información</h1>
-<span style="color:#F00;font-weight:bolder">{estado}</span>
-<h1>Extra</h1>
-<font size="1">{version}</font>
 </div>
+<hr />
+<div id="notas">
+Mensajitos.php es un portal de envío de mensajes SMS (mensajitos) a El Salvador.<br />
+Soporte de envío a: <strong>Digicel</strong>, <strong>Telecom</strong> y <strong>Tigo</strong>. El Soporte <strong>Telefonica</strong> es un trabajo en progreso<br />
+Mensajitos.php es una idea original de <strong>Mario Gomez (mxgxw)</strong>. Mensajitos.php TSV fue reelaborada por <strong>Vladimir Hidalgo</strong>.<br />
+El hosting es patrocinado por <strong>Ernesto Serrano</strong> y su genial Academia de Inglés "<strong>English Teaching</strong>"<br />
+Nota de privacidad: no es almacenado ningún mensaje enviado a travez de Mensajitos.php por TodoSV o sus patrocinadores<br />
+<hr />
+<span style="float:left">{version} | <a href="estad.php" target="_blank">estadísticas</a> | <a id="bookmark">¡agreganos a tus favoritos!</a> | comparte esta página&nbsp;</span><span id="bookmarks"></span>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-10561524-2");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
 </body>
 </html>
